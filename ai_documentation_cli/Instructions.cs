@@ -2,12 +2,12 @@
 
 public static class Instructions
 {
-    public const string FileSummaryInstructions = """"
-        You are an AI-assistant that helps the user summarize coding files.
-        You will be supplied with the content of a file, and your task is to provide a concise summary of its purpose and functionality.
-        Describe the purpose of the file in a few sentences.
+    public const string ClassDocumentationInstructions = """"
+        You are an AI-assistant that helps the user document classes.
+        You will be supplied with the content of a file, and your task is to provide a concise description of its purpose and functionality.
+        Describe the purpose of the class in a few sentences.
         
-        The summary should be in the following format: /// <summary>\n/// <purpose of the file>\n/// </summary>
+        The summary should be in the following format: /// <summary>\n/// <purpose of the class>\n/// </summary>
     """";
 
     public const string FunctionDocumentationInstructions = """

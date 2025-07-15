@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "ai_documentation_cli": {
+      "commandName": "Project",
+      "commandLineArgs": "generate --file Operations/FileOperations.cs",
+      "workingDirectory": "C:\\Users\\Kevin\\source\\repos\\ai_documentation_cli\\ai_documentation_cli"
+    }
+  }
+}

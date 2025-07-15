@@ -21,16 +21,33 @@ public class GenerateCommands
             throw new ArgumentException("The 'file' option must be provided.");
         }
 
-        var fileContent = FileOperations.GetFileContent(file);
+        var fileLines = FileOperations.GetFileLines(file);
 
-        Console.WriteLine("\nGenerating file summary...\n");
+        var parsedFile = FileOperations.ParseFileLines(fileLines);
 
-        var fileSummary = await _chatCompletionService.GetChatCompletionAsync(fileContent, $"{Instructions.FileSummaryInstructions} {additionalQuery}");
+        foreach (var classDoc in parsedFile.Classes)
+        {
+            var joinedLines = string.Join("\n", classDoc.Lines.Select(l => l.Content));
 
-        Console.WriteLine(fileSummary);
+            var classSummary = await _chatCompletionService.GetChatCompletionAsync(joinedLines, Instructions.ClassDocumentationInstructions);
 
-        var fileSummaryLines = fileSummary.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            classDoc.Summary = classSummary;
 
-        FileOperations.InsertBeforeLineWithPrefix(fileSummaryLines.ToList(), "public static class", file);
+            Console.WriteLine($"\n{joinedLines}\n");
+
+            Console.WriteLine($"\n{classDoc.Summary}\n");
+        }
+
+        foreach (var functionDoc in parsedFile.Functions)
+        {
+            var joinedLines = string.Join("\n", functionDoc.Lines.Select(l => l.Content));
+            var functionSummary = await _chatCompletionService.GetChatCompletionAsync(joinedLines, Instructions.FunctionDocumentationInstructions);
+
+            functionDoc.Summary = functionSummary;
+
+            Console.WriteLine($"\n{joinedLines}\n");
+
+            Console.WriteLine($"\n{functionDoc.Summary}\n");
+        }
     }
 }
