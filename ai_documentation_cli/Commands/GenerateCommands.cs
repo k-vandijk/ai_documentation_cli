@@ -14,7 +14,7 @@ public class GenerateCommands
     }
 
     [Command("generate")]
-    public async Task Execute([Option("dir")] string? dir, [Option("file")] string? file, [Option("query")] string? additionalQuery)
+    public async Task Execute([Option("file")] string? file, [Option("query")] string? additionalQuery)
     {
         if (string.IsNullOrEmpty(file))
         {
@@ -25,8 +25,12 @@ public class GenerateCommands
 
         Console.WriteLine("\nGenerating file summary...\n");
 
-        var fileSummary = await _chatCompletionService.GetChatCompletionAsync(fileContent, Instructions.FileSummaryInstructions);
+        var fileSummary = await _chatCompletionService.GetChatCompletionAsync(fileContent, $"{Instructions.FileSummaryInstructions} {additionalQuery}");
 
         Console.WriteLine(fileSummary);
+
+        var fileSummaryLines = fileSummary.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+        FileOperations.InsertBeforeLineWithPrefix(fileSummaryLines.ToList(), "public static class", file);
     }
 }

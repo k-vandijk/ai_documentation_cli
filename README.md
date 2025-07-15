@@ -7,10 +7,10 @@ The application will search every .cs file in the current directory and generate
 # List of commands
 
 ## `generate --file <filename>`
-Generate documentation for a specific .cs file.
+Generate documentation for a specific file
 
-## `list`
-List all .cs files in the current directory.
+## `list --dir <directory>`
+List all relevant files in the current directory, or if a directory is specified, in that directory.
 
 # `.documentignore` example
 

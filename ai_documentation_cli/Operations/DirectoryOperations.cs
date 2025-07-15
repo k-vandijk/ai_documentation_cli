@@ -1,7 +1,13 @@
-﻿using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
+using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
 
 namespace ai_documentation_cli.Operations;
 
+/// <summary>
+/// This file contains a static class `DirectoryOperations` that provides a method `ListRelevantFiles` to list files with specific extensions in a given directory.
+/// </summary>
+/// <summary>
+/// This file defines a static class `DirectoryOperations` that contains a method `ListRelevantFiles` used to list files with specific extensions in a given directory.
+/// </summary>
 public static class DirectoryOperations
 {
     public static List<string> ListRelevantFiles(string path, List<string> extensions)
