@@ -1,0 +1,6 @@
+.env
+NuGet.config
+
+bin/
+obj/
+.vs/
