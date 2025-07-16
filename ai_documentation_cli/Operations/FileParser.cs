@@ -6,12 +6,16 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 namespace ai_documentation_cli.Operations;
 
 /// <summary>
-/// This static class provides methods for parsing a file containing C# code to extract class and method definitions.
-/// It includes functionality to retrieve all lines from a file, parse class definitions, and parse method definitions.
-/// The class utilizes regular expressions and the Roslyn syntax tree to extract and document classes and methods efficiently.
+/// This class provides methods for parsing a file containing C# code to extract class and method definitions along with their documentation.
+/// It includes functionality to read lines from a file, parse classes, parse functions, and extract code blocks for classes or functions.
 /// </summary>
 public static class FileParser
 {
+    /// <summary>
+    /// Retrieves the lines of a file specified by the given path and creates a list of LineDto objects.
+    /// </summary>
+    /// <param name="path">The file path from which to read the lines.</param>
+    /// <returns>A list of LineDto objects containing unique identifiers and content of each line in the file.</returns>
     public static List<LineDto> GetFileLines(string path)
     {
         if (!File.Exists(path))
@@ -22,6 +26,13 @@ public static class FileParser
         return File.ReadLines(path).Select(l => new LineDto { UniqueIdentifier = UniqueIdentifierGenerator.GenerateShortUniqueIdentifier(), Content = l }).ToList();
     }
 
+    /// <summary>
+    /// This function parses a list of LineDto objects to extract class, record, or struct definitions in C# code.
+    /// It uses a regex pattern to match lines containing the keywords 'class', 'record', or 'struct' followed by a valid identifier.
+    /// The function ignores lines starting with '//', does not match generic types or nested classes, and assumes class definitions are on a single line.
+    /// </summary>
+    /// <param name="lines">A list of LineDto objects representing lines of code to parse.</param>
+    /// <returns>A list of ClassDocumentationDto objects representing the extracted class, record, or struct definitions.</returns>
     public static List<ClassDocumentationDto> ParseClasses(List<LineDto> lines)
     {
         // This regex matches class, record, or struct definitions in C# code.
@@ -54,6 +65,11 @@ public static class FileParser
         return classes;
     }
 
+    /// <summary>
+    /// This function parses and extracts function definitions from a list of lines containing C# code.
+    /// </summary>
+    /// <param name="lines">A list of LineDto objects representing lines of C# code to be processed.</param>
+    /// <returns>A list of FunctionDocumentationDto objects containing information about the parsed functions.</returns>
     public static List<FunctionDocumentationDto> ParseFunctions(List<LineDto> lines)
     {
         // This regex matches method definitions in C# code.
@@ -142,12 +158,6 @@ public static class FileParser
     /// <param name="lines">The lines for the function to loop through; Generally all lines of the file.</param>
     /// <param name="index">The starting line, generally the declaration of a class/function.</param>
     /// <returns>The full list of lines of the class/function.</returns>
-/// <summary>
-/// Extracts a block of lines from a list of LineDto objects starting at the specified index up to the matching closing brace.
-/// </summary>
-/// <param name="lines">The list of LineDto objects containing the lines to extract the block from.</param>
-/// <param name="index">The index at which to start extracting the block. Will be updated to the index of the next line after the block.</param>
-/// <returns>A List of LineDto objects representing the extracted block of lines.</returns>
     private static List<LineDto> ExtractBlock(List<LineDto> lines, ref int index)
     {
         var block = new List<LineDto>();

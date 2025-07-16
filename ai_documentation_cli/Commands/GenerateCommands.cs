@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using ai_documentation_cli.Dtos;
+﻿using ai_documentation_cli.Dtos;
 using ai_documentation_cli.Interfaces;
 using ai_documentation_cli.Operations;
 using Cocona;
@@ -25,16 +24,8 @@ public class GenerateCommands
 
         var lines = FileParser.GetFileLines(file);
 
-        var sw = Stopwatch.StartNew();
         var classes = FileParser.ParseClasses(lines);
-        sw.Stop();
-        Console.WriteLine($"Parsed {classes.Count} classes in {sw.ElapsedMilliseconds} ms");
-
-        sw = Stopwatch.StartNew();
         var functions = FileParser.ParseFunctions(lines);
-        sw.Stop();
-        Console.WriteLine($"Parsed {functions.Count} functions in {sw.ElapsedMilliseconds} ms");
-
         var parsedFile = new ParsedFileDto { Lines = lines, Classes = classes, Functions = functions, };
 
         foreach (var c in parsedFile.Classes)
@@ -50,17 +41,17 @@ public class GenerateCommands
             await File.WriteAllLinesAsync(file, lines.Select(l => l.Content));
         }
 
-        // foreach (var f in parsedFile.Functions)
-        // {
-        //     var stringifiedFunction = string.Join("\n", f.Lines.Select(l => l.Content));
-        //     var functionSummary = await _chatCompletionService.GetChatCompletionAsync(stringifiedFunction, Instructions.FunctionDocumentationInstructions);
-        //     
-        //     f.Summary = functionSummary;
-        //     
-        //     var linesToInsert = FileInserter.SplitSummaryIntoLines(functionSummary);
-        //     lines = FileInserter.InsertLinesAt(f.Lines.First().UniqueIdentifier, linesToInsert, lines);
-        //     
-        //     await File.WriteAllLinesAsync(file, lines.Select(l => l.Content));
-        // }
+        foreach (var f in parsedFile.Functions.Where(f => f.Lines.First().Content.Trim().StartsWith("public")))
+        {
+            var stringifiedFunction = string.Join("\n", f.Lines.Select(l => l.Content));
+            var functionSummary = await _chatCompletionService.GetChatCompletionAsync(stringifiedFunction, Instructions.FunctionDocumentationInstructions);
+            
+            f.Summary = functionSummary;
+            
+            var linesToInsert = FileInserter.SplitSummaryIntoLines(functionSummary);
+            lines = FileInserter.InsertLinesAt(f.Lines.First().UniqueIdentifier, linesToInsert, lines);
+            
+            await File.WriteAllLinesAsync(file, lines.Select(l => l.Content));
+        }
     }
 }
