@@ -1,4 +1,5 @@
-﻿using ai_documentation_cli.Interfaces;
+﻿using ai_documentation_cli.Dtos;
+using ai_documentation_cli.Interfaces;
 using ai_documentation_cli.Operations;
 using Cocona;
 
@@ -6,48 +7,38 @@ namespace ai_documentation_cli.Commands;
 
 public class GenerateCommands
 {
-    private readonly IChatCompletionService _chatCompletionService;
+    //private readonly IChatCompletionService _chatCompletionService;
 
-    public GenerateCommands(IChatCompletionService chatCompletionService)
-    {
-        _chatCompletionService = chatCompletionService;
-    }
+    //public GenerateCommands(IChatCompletionService chatCompletionService)
+    //{
+    //    _chatCompletionService = chatCompletionService;
+    //}
 
     [Command("generate")]
-    public async Task Execute([Option("file")] string? file, [Option("query")] string? additionalQuery)
+    public void Execute([Option("file")] string? file, [Option("query")] string? additionalQuery)
     {
         if (string.IsNullOrEmpty(file))
         {
             throw new ArgumentException("The 'file' option must be provided.");
         }
 
-        var fileLines = FileOperations.GetFileLines(file);
+        var lines = FileOperations.GetFileLines(file);
 
-        var parsedFile = FileOperations.ParseFileLines(fileLines);
+        var classes = FileOperations.ParseClasses(lines);
+        var functions = FileOperations.ParseFunctions(lines);
 
-        foreach (var classDoc in parsedFile.Classes)
+        //var parsedFile = new ParsedFileDto { Lines = lines, Classes = classes, Functions = functions, };
+
+        foreach (var c in classes)
         {
-            var joinedLines = string.Join("\n", classDoc.Lines.Select(l => l.Content));
-
-            var classSummary = await _chatCompletionService.GetChatCompletionAsync(joinedLines, Instructions.ClassDocumentationInstructions);
-
-            classDoc.Summary = classSummary;
-
-            Console.WriteLine($"\n{joinedLines}\n");
-
-            Console.WriteLine($"\n{classDoc.Summary}\n");
+            Console.WriteLine(c.Lines.First().Content.Trim());
         }
 
-        foreach (var functionDoc in parsedFile.Functions)
+        foreach (var f in functions)
         {
-            var joinedLines = string.Join("\n", functionDoc.Lines.Select(l => l.Content));
-            var functionSummary = await _chatCompletionService.GetChatCompletionAsync(joinedLines, Instructions.FunctionDocumentationInstructions);
+            var functionString = string.Join("\n", f.Lines.Select(l => l.Content));
 
-            functionDoc.Summary = functionSummary;
-
-            Console.WriteLine($"\n{joinedLines}\n");
-
-            Console.WriteLine($"\n{functionDoc.Summary}\n");
+            Console.WriteLine(functionString);
         }
     }
 }
