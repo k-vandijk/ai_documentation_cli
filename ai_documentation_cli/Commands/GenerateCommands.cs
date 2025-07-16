@@ -50,18 +50,5 @@ public class GenerateCommands
                 await File.WriteAllLinesAsync(file, lines.Select(l => l.Content));
             }
         }
-
-        // foreach (var f in parsedFile.Functions.Where(f => f.Lines.First().Content.Trim().StartsWith("public")))
-        // {
-        //     var stringifiedFunction = string.Join("\n", f.Lines.Select(l => l.Content));
-        //     var functionSummary = await _chatCompletionService.GetChatCompletionAsync(stringifiedFunction, Instructions.FunctionDocumentationInstructions);
-        //     
-        //     f.Summary = functionSummary;
-        //     
-        //     var linesToInsert = FileInserter.SplitSummaryIntoLines(functionSummary);
-        //     lines = FileInserter.InsertLinesAt(f.Lines.First().UniqueIdentifier, linesToInsert, lines);
-        //     
-        //     await File.WriteAllLinesAsync(file, lines.Select(l => l.Content));
-        // }
     }
 }

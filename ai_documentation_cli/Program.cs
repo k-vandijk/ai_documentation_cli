@@ -1,10 +1,13 @@
 ﻿using ai_documentation_cli.App.Commands;
+using ai_documentation_cli.Infrastructure;
 using Cocona;
 using kvandijk.Common.Utils;
 
 DotenvLoader.Load(".env");
 
 var builder = CoconaApp.CreateBuilder();
+
+builder.Services.AddInfrastructure();
 
 var app = builder.Build();
 

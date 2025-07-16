@@ -2,7 +2,7 @@
   "profiles": {
     "ai_documentation_cli": {
       "commandName": "Project",
-      "commandLineArgs": "generate --file Operations/FileParser.cs",
+      "commandLineArgs": "generate --file ../ai_documentation_cli.Application/Operations/FileParser.cs",
       "workingDirectory": "C:\\Users\\Kevin\\source\\repos\\ai_documentation_cli\\ai_documentation_cli"
     }
   }

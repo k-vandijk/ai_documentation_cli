@@ -1,6 +1,4 @@
 using ai_documentation_cli.Domain.Models;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Text.RegularExpressions;
 
 namespace ai_documentation_cli.Application.Operations;
@@ -11,11 +9,6 @@ namespace ai_documentation_cli.Application.Operations;
 /// </summary>
 public static class FileParser
 {
-    /// <summary>
-    /// Retrieves the lines of a file specified by the given path and creates a list of LineDto objects.
-    /// </summary>
-    /// <param name="path">The file path from which to read the lines.</param>
-    /// <returns>A list of LineDto objects containing unique identifiers and content of each line in the file.</returns>
     public static List<Line> GetFileLines(string path)
     {
         if (!File.Exists(path))
@@ -26,13 +19,6 @@ public static class FileParser
         return File.ReadLines(path).Select(l => new Line { UniqueIdentifier = UniqueIdentifierGenerator.GenerateShortUniqueIdentifier(), Content = l }).ToList();
     }
 
-    /// <summary>
-    /// This function parses a list of LineDto objects to extract class, record, or struct definitions in C# code.
-    /// It uses a regex pattern to match lines containing the keywords 'class', 'record', or 'struct' followed by a valid identifier.
-    /// The function ignores lines starting with '//', does not match generic types or nested classes, and assumes class definitions are on a single line.
-    /// </summary>
-    /// <param name="lines">A list of LineDto objects representing lines of code to parse.</param>
-    /// <returns>A list of ClassDocumentationDto objects representing the extracted class, record, or struct definitions.</returns>
     public static List<ClassDocumentation> ParseClasses(List<Line> lines)
     {
         // This regex matches class, record, or struct definitions in C# code.
@@ -62,14 +48,19 @@ public static class FileParser
             }
         }
 
+        foreach (var classDoc in classes)
+        {
+            var summaryLines = GetXmlDocumentationLinesAt(classDoc.Lines.First().UniqueIdentifier, lines);
+
+            if (summaryLines.Any())
+            {
+                classDoc.Summary = string.Join("\n", summaryLines.Select(l => l.Content.Trim()));
+            }
+        }
+
         return classes;
     }
 
-    /// <summary>
-    /// This function parses and extracts function definitions from a list of lines containing C# code.
-    /// </summary>
-    /// <param name="lines">A list of LineDto objects representing lines of C# code to be processed.</param>
-    /// <returns>A list of FunctionDocumentationDto objects containing information about the parsed functions.</returns>
     public static List<FunctionDocumentation> ParseFunctions(List<Line> lines)
     {
         // This regex matches method definitions in C# code.
@@ -104,55 +95,19 @@ public static class FileParser
         return functions;
     }
 
-    private static ReturnType ParseReturnTypeWithRoslyn(string methodSignature)
+    private static List<Line> GetXmlDocumentationLinesAt(string lineId, List<Line> lines)
     {
-        var dummyCode = $"class Dummy {{ {methodSignature} {{ }} }}";
-        var tree = CSharpSyntaxTree.ParseText(dummyCode);
-        var root = tree.GetRoot();
-
-        var method = root.DescendantNodes()
-            .OfType<MethodDeclarationSyntax>()
-            .FirstOrDefault();
-
-        if (method == null)
+        int i = lines.FindIndex(l => l.UniqueIdentifier == lineId) - 1; // Start from the line before the method or class declaration
+        var result = new List<Line>();
+        while (i >= 0 && lines[i].Content.TrimStart().StartsWith("///"))
         {
-            return new ReturnType { Type = "unknown" };
+            result.Insert(0, lines[i]);
+            i--;
         }
 
-        return new ReturnType
-        {
-            Type = method.ReturnType.ToString(),
-        };
+        return result;
     }
 
-    private static List<Parameter> ParseParametersWithRoslyn(string methodSignature)
-    {
-        var fullMethod = $"class Dummy {{ {methodSignature} {{ }} }}";
-        var tree = CSharpSyntaxTree.ParseText(fullMethod);
-        var root = tree.GetRoot();
-
-        var method = root.DescendantNodes().OfType<MethodDeclarationSyntax>().FirstOrDefault();
-        if (method == null)
-        {
-            return new List<Parameter>();
-        }
-
-        return method.ParameterList.Parameters
-            .Select(p => new Parameter
-            {
-                Name = p.Identifier.Text,
-                Type = p.Type?.ToString() ?? string.Empty,
-            })
-            .ToList();
-    }
-
-    /// <summary>
-    /// This function extracts a block of code from the list of lines, starting from the current index.
-    /// It counts the opening and closing braces to determine when the block ends.
-    /// </summary>
-    /// <param name="lines">The lines for the function to loop through; Generally all lines of the file.</param>
-    /// <param name="index">The starting line, generally the declaration of a class/function.</param>
-    /// <returns>The full list of lines of the class/function.</returns>
     private static List<Line> ExtractBlock(List<Line> lines, ref int index)
     {
         var block = new List<Line>();
