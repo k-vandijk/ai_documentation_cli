@@ -23,7 +23,8 @@ public static class FileParser
         return File.ReadLines(path).Select(l => new Line { UniqueIdentifier = UniqueIdentifierGenerator.GenerateShortUniqueIdentifier(), Content = l }).ToList();
     }
 
-    // TODO find a way to refactor this so that it can be used for both classes and functions
+    // TODO find a way to refactor ParseClasses and ParseFunctions so that it can be used for both classes and functions
+    // DO THIS BEFORE ANY OTHER CHANGES TO THESE FUNCTIONS!!!
 
     /// <summary>
     /// Parses the list of lines to extract class, record, or struct definitions in C# code.

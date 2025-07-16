@@ -16,29 +16,34 @@ public class GenerateCommands
     }
 
     [Command("generate")]
-    public async Task Execute([Option("file")] string? file, [Option("query")] string? additionalQuery)
+    public async Task Execute([Option("file")] string? file, [Option("dir")] string? dir, [Option("query")] string? additionalQuery)
     {
-        if (string.IsNullOrEmpty(file))
+        if (string.IsNullOrEmpty(file) && string.IsNullOrEmpty(dir))
         {
-            throw new FileNotIncludedException("The 'file' parameter must be provided.");
+            throw new InvalidOperationException("You must provide either a file or a directory to generate documentation.");
         }
 
-        var lines = FileParser.GetFileLines(file);
-        var classes = FileParser.ParseClasses(lines);
-        var functions = FileParser.ParseFunctions(lines);
-        var parsedFile = new ParsedFile { Lines = lines, Classes = classes, Functions = functions, };
-
-        foreach (var c in parsedFile.Classes)
+        if (!string.IsNullOrEmpty(file) && !string.IsNullOrEmpty(dir))
         {
-            lines = await ProcessClassDocumentation(c, lines);
+            throw new InvalidOperationException("You cannot provide both a file and a directory to generate documentation.");
         }
 
-        foreach (var f in parsedFile.Functions)
+        if (!string.IsNullOrEmpty(file))
         {
-            lines = await ProcessFunctionDocumentation(f, lines);
+            await HandleDocumentationGenerationForFile(file);
         }
+        else if (!string.IsNullOrEmpty(dir))
+        {
+            var extensions = new List<string> { ".cs" };
+            var currentDirectory = Environment.CurrentDirectory;
+            var directory = Path.Join(currentDirectory, dir);
+            var relevantFiles = DirectoryOperations.ListRelevantFiles(directory, extensions);
 
-        await File.WriteAllLinesAsync(file, lines.Select(l => l.Content));
+            foreach (var relevantFile in relevantFiles)
+            {
+                await HandleDocumentationGenerationForFile(relevantFile);
+            }
+        }
     }
 
     // TODO: RELOCATE: This file is meant only for Commands, any handlers or helpers should be moved elsewhere.
@@ -62,6 +67,28 @@ public class GenerateCommands
 
         var newLines = FileInserter.SplitSummaryIntoLines(newSummary);
         return FileInserter.InsertLinesAt(anchorId, newLines, lines);
+    }
+
+    // TODO: RELOCATE: This file is meant only for Commands, any handlers or helpers should be moved elsewhere.
+
+    private async Task HandleDocumentationGenerationForFile(string file)
+    {
+        var lines = FileParser.GetFileLines(file);
+        var classes = FileParser.ParseClasses(lines);
+        var functions = FileParser.ParseFunctions(lines);
+        var parsedFile = new ParsedFile { Lines = lines, Classes = classes, Functions = functions, };
+
+        foreach (var c in parsedFile.Classes)
+        {
+            lines = await ProcessClassDocumentation(c, lines);
+        }
+
+        foreach (var f in parsedFile.Functions)
+        {
+            lines = await ProcessFunctionDocumentation(f, lines);
+        }
+
+        await File.WriteAllLinesAsync(file, lines.Select(l => l.Content));
     }
 
     // TODO: RELOCATE: This file is meant only for Commands, any handlers or helpers should be moved elsewhere.

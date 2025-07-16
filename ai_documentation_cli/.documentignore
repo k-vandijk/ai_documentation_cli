@@ -1,2 +1,5 @@
 ﻿obj/
 bin/
+
+# For now, ignore the following, because I'm questioning if it supports files without classes
+Program.cs
