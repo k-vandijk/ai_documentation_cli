@@ -1,8 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" />
-  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\ai_documentation_cli.Domain\ai_documentation_cli.Domain.csproj" />
   </ItemGroup>
+
+  <ItemGroup Label="Runtime dependencies">
+    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" />
+  </ItemGroup>
+
+  <ItemGroup Label="Development-only dependencies">
+    <PackageReference Include="SonarAnalyzer.CSharp"><PrivateAssets>all</PrivateAssets></PackageReference>
+    <PackageReference Include="StyleCop.Analyzers"><PrivateAssets>all</PrivateAssets></PackageReference>
+  </ItemGroup>
+
 </Project>

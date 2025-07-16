@@ -1,5 +1,5 @@
-using ai_documentation_cli.Domain.Models;
 using System.Text.RegularExpressions;
+using ai_documentation_cli.Domain.Models;
 
 namespace ai_documentation_cli.Application.Operations;
 
@@ -73,10 +73,10 @@ public static class FileParser
     }
 
     /// <summary>
-    /// Parses the provided list of lines containing C# code to extract and document functions defined within the code.
+    /// Parses a list of lines containing C# code to extract and document method definitions.
     /// </summary>
-    /// <param name="lines">The list of Line objects representing lines of C# code to parse.</param>
-    /// <returns>A List of FunctionDocumentation objects representing the parsed functions with their respective documentation.</returns>
+    /// <param name="lines">The list of lines containing C# code to search for method definitions.</param>
+    /// <returns>A list of FunctionDocumentation objects representing the parsed method definitions.</returns>
     public static List<FunctionDocumentation> ParseFunctions(List<Line> lines)
     {
         // This regex matches method definitions in C# code.
@@ -97,8 +97,6 @@ public static class FileParser
             if (methodRegex.IsMatch(lines[i].Content.Trim()))
             {
                 var block = ExtractBlock(lines, ref i);
-
-                var sigLine = block.FirstOrDefault()?.Content.Trim() ?? string.Empty;
 
                 functions.Add(new FunctionDocumentation
                 {

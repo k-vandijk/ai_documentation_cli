@@ -1,1 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup Label="Development-only dependencies">
+    <PackageReference Include="SonarAnalyzer.CSharp"><PrivateAssets>all</PrivateAssets></PackageReference>
+    <PackageReference Include="StyleCop.Analyzers"><PrivateAssets>all</PrivateAssets></PackageReference>
+  </ItemGroup>
+</Project>

@@ -5,13 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cocona" />
-    <PackageReference Include="kvandijk.Common" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ai_documentation_cli.Application\ai_documentation_cli.Application.csproj" />
     <ProjectReference Include="..\ai_documentation_cli.Infrastructure\ai_documentation_cli.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup Label="Runtime dependencies">
+    <PackageReference Include="Cocona" />
+    <PackageReference Include="kvandijk.Common" />
+  </ItemGroup>
+
+  <ItemGroup Label="Development-only dependencies">
+    <PackageReference Include="SonarAnalyzer.CSharp"><PrivateAssets>all</PrivateAssets></PackageReference>
+    <PackageReference Include="StyleCop.Analyzers"><PrivateAssets>all</PrivateAssets></PackageReference>
+  </ItemGroup>
 </Project>
