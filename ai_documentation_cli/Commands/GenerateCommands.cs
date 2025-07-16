@@ -1,6 +1,6 @@
 ﻿using ai_documentation_cli.Application.Interfaces;
 using ai_documentation_cli.Application.Operations;
-using ai_documentation_cli.Domain.Dtos;
+using ai_documentation_cli.Domain.Models;
 using Cocona;
 
 namespace ai_documentation_cli.App.Commands;
@@ -29,7 +29,7 @@ public class GenerateCommands
 
         var classes = FileParser.ParseClasses(lines);
         var functions = FileParser.ParseFunctions(lines);
-        var parsedFile = new ParsedFileDto { Lines = lines, Classes = classes, Functions = functions, };
+        var parsedFile = new ParsedFile { Lines = lines, Classes = classes, Functions = functions, };
 
         foreach (var c in parsedFile.Classes)
         {

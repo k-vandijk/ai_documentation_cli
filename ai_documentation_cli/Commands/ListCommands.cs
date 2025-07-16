@@ -15,8 +15,6 @@ public class ListCommands
 
         var relevantFiles = DirectoryOperations.ListRelevantFiles(directory, extensions);
 
-        Console.WriteLine($"\nFound {relevantFiles.Count} relevant files: \n");
-
         foreach (var file in relevantFiles)
         {
             Console.WriteLine(file);

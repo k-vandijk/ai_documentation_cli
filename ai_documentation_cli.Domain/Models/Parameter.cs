@@ -1,6 +1,6 @@
-﻿namespace ai_documentation_cli.Domain.Dtos;
+﻿namespace ai_documentation_cli.Domain.Models;
 
-public class ParameterDto
+public class Parameter
 {
     public string Type { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;

@@ -1,4 +1,4 @@
-using ai_documentation_cli.Domain.Dtos;
+using ai_documentation_cli.Domain.Models;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Text.RegularExpressions;
@@ -16,14 +16,14 @@ public static class FileParser
     /// </summary>
     /// <param name="path">The file path from which to read the lines.</param>
     /// <returns>A list of LineDto objects containing unique identifiers and content of each line in the file.</returns>
-    public static List<LineDto> GetFileLines(string path)
+    public static List<Line> GetFileLines(string path)
     {
         if (!File.Exists(path))
         {
             throw new FileNotFoundException($"The file '{path}' does not exist.");
         }
 
-        return File.ReadLines(path).Select(l => new LineDto { UniqueIdentifier = UniqueIdentifierGenerator.GenerateShortUniqueIdentifier(), Content = l }).ToList();
+        return File.ReadLines(path).Select(l => new Line { UniqueIdentifier = UniqueIdentifierGenerator.GenerateShortUniqueIdentifier(), Content = l }).ToList();
     }
 
     /// <summary>
@@ -33,14 +33,14 @@ public static class FileParser
     /// </summary>
     /// <param name="lines">A list of LineDto objects representing lines of code to parse.</param>
     /// <returns>A list of ClassDocumentationDto objects representing the extracted class, record, or struct definitions.</returns>
-    public static List<ClassDocumentationDto> ParseClasses(List<LineDto> lines)
+    public static List<ClassDocumentation> ParseClasses(List<Line> lines)
     {
         // This regex matches class, record, or struct definitions in C# code.
         // It looks for the keywords 'class', 'record', or 'struct' followed by one or more whitespace characters and then a valid identifier (name).
         // It does not match generic types or nested classes.
         // It assumes that the class definition is on a single line, which is common in C#.
         var classRegex = new Regex(@"\b(class|record|struct)\s+\w+", RegexOptions.Compiled);
-        var classes = new List<ClassDocumentationDto>();
+        var classes = new List<ClassDocumentation>();
 
         for (int i = 0; i < lines.Count; i++)
         {
@@ -54,7 +54,7 @@ public static class FileParser
             {
                 var block = ExtractBlock(lines, ref i);
 
-                classes.Add(new ClassDocumentationDto
+                classes.Add(new ClassDocumentation
                 {
                     Summary = string.Empty,
                     Lines = block,
@@ -70,14 +70,14 @@ public static class FileParser
     /// </summary>
     /// <param name="lines">A list of LineDto objects representing lines of C# code to be processed.</param>
     /// <returns>A list of FunctionDocumentationDto objects containing information about the parsed functions.</returns>
-    public static List<FunctionDocumentationDto> ParseFunctions(List<LineDto> lines)
+    public static List<FunctionDocumentation> ParseFunctions(List<Line> lines)
     {
         // This regex matches method definitions in C# code.
         // It looks for access modifiers (public, protected, internal, private), optional static and async keywords,
         // followed by a return type (which can include generics), a method name, and a parameter list.
         // It does not match method signatures that are split across multiple lines.
         var methodRegex = new Regex(@"^\s*(public|protected|internal|private)\s+(static\s+)?(async\s+)?[\w<>\[\],]+\s+\w+\s*\(.*?\)\s*$", RegexOptions.Compiled);
-        var functions = new List<FunctionDocumentationDto>();
+        var functions = new List<FunctionDocumentation>();
 
         for (int i = 0; i < lines.Count; i++)
         {
@@ -93,7 +93,7 @@ public static class FileParser
 
                 var sigLine = block.FirstOrDefault()?.Content.Trim() ?? string.Empty;
 
-                functions.Add(new FunctionDocumentationDto
+                functions.Add(new FunctionDocumentation
                 {
                     Summary = string.Empty,
                     Lines = block,
@@ -104,7 +104,7 @@ public static class FileParser
         return functions;
     }
 
-    private static ReturnTypeDto ParseReturnTypeWithRoslyn(string methodSignature)
+    private static ReturnType ParseReturnTypeWithRoslyn(string methodSignature)
     {
         var dummyCode = $"class Dummy {{ {methodSignature} {{ }} }}";
         var tree = CSharpSyntaxTree.ParseText(dummyCode);
@@ -116,16 +116,16 @@ public static class FileParser
 
         if (method == null)
         {
-            return new ReturnTypeDto { Type = "unknown" };
+            return new ReturnType { Type = "unknown" };
         }
 
-        return new ReturnTypeDto
+        return new ReturnType
         {
             Type = method.ReturnType.ToString(),
         };
     }
 
-    private static List<ParameterDto> ParseParametersWithRoslyn(string methodSignature)
+    private static List<Parameter> ParseParametersWithRoslyn(string methodSignature)
     {
         var fullMethod = $"class Dummy {{ {methodSignature} {{ }} }}";
         var tree = CSharpSyntaxTree.ParseText(fullMethod);
@@ -134,11 +134,11 @@ public static class FileParser
         var method = root.DescendantNodes().OfType<MethodDeclarationSyntax>().FirstOrDefault();
         if (method == null)
         {
-            return new List<ParameterDto>();
+            return new List<Parameter>();
         }
 
         return method.ParameterList.Parameters
-            .Select(p => new ParameterDto
+            .Select(p => new Parameter
             {
                 Name = p.Identifier.Text,
                 Type = p.Type?.ToString() ?? string.Empty,
@@ -153,9 +153,9 @@ public static class FileParser
     /// <param name="lines">The lines for the function to loop through; Generally all lines of the file.</param>
     /// <param name="index">The starting line, generally the declaration of a class/function.</param>
     /// <returns>The full list of lines of the class/function.</returns>
-    private static List<LineDto> ExtractBlock(List<LineDto> lines, ref int index)
+    private static List<Line> ExtractBlock(List<Line> lines, ref int index)
     {
-        var block = new List<LineDto>();
+        var block = new List<Line>();
         int braceCount = 0;
         bool started = false;
 
