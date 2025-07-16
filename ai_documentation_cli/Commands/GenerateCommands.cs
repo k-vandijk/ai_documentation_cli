@@ -7,6 +7,9 @@ namespace ai_documentation_cli.App.Commands;
 
 // TODO this code needs to be refactored.
 // TODO Make sure that when documentation already exists, it determines whether to overwrite it or not.
+// - I already have instructed the LLM
+// - All needed to do is to parse the existing documentation, and return it with the Documentation model
+// - Then test the code with a file that has existing documentation, and fix any issues that arise.
 
 public class GenerateCommands
 {
@@ -34,27 +37,31 @@ public class GenerateCommands
         foreach (var c in parsedFile.Classes)
         {
             var stringifiedClass = string.Join("\n", c.Lines.Select(l => l.Content));
-            var classSummary = await _chatCompletionService.GetChatCompletionAsync(stringifiedClass, Instructions.ClassDocumentationInstructions);
+            var prompt = PromptBuilder.BuildPrompt(stringifiedClass, c.Summary);
+            var classSummary = await _chatCompletionService.GetChatCompletionAsync(prompt, Instructions.ClassDocumentationInstructions);
 
-            c.Summary = classSummary;
+            if (!string.IsNullOrEmpty(classSummary.Trim()))
+            {
+                c.Summary = classSummary;
 
-            var linesToInsert = FileInserter.SplitSummaryIntoLines(classSummary);
-            lines = FileInserter.InsertLinesAt(c.Lines.First().UniqueIdentifier, linesToInsert, lines);
+                var linesToInsert = FileInserter.SplitSummaryIntoLines(classSummary);
+                lines = FileInserter.InsertLinesAt(c.Lines.First().UniqueIdentifier, linesToInsert, lines);
 
-            await File.WriteAllLinesAsync(file, lines.Select(l => l.Content));
+                await File.WriteAllLinesAsync(file, lines.Select(l => l.Content));
+            }
         }
 
-        foreach (var f in parsedFile.Functions.Where(f => f.Lines.First().Content.Trim().StartsWith("public")))
-        {
-            var stringifiedFunction = string.Join("\n", f.Lines.Select(l => l.Content));
-            var functionSummary = await _chatCompletionService.GetChatCompletionAsync(stringifiedFunction, Instructions.FunctionDocumentationInstructions);
-            
-            f.Summary = functionSummary;
-            
-            var linesToInsert = FileInserter.SplitSummaryIntoLines(functionSummary);
-            lines = FileInserter.InsertLinesAt(f.Lines.First().UniqueIdentifier, linesToInsert, lines);
-            
-            await File.WriteAllLinesAsync(file, lines.Select(l => l.Content));
-        }
+        // foreach (var f in parsedFile.Functions.Where(f => f.Lines.First().Content.Trim().StartsWith("public")))
+        // {
+        //     var stringifiedFunction = string.Join("\n", f.Lines.Select(l => l.Content));
+        //     var functionSummary = await _chatCompletionService.GetChatCompletionAsync(stringifiedFunction, Instructions.FunctionDocumentationInstructions);
+        //     
+        //     f.Summary = functionSummary;
+        //     
+        //     var linesToInsert = FileInserter.SplitSummaryIntoLines(functionSummary);
+        //     lines = FileInserter.InsertLinesAt(f.Lines.First().UniqueIdentifier, linesToInsert, lines);
+        //     
+        //     await File.WriteAllLinesAsync(file, lines.Select(l => l.Content));
+        // }
     }
 }

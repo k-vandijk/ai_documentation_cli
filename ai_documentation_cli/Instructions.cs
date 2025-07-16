@@ -4,8 +4,12 @@ public static class Instructions
 {
     public const string ClassDocumentationInstructions = """"
         You are an AI-assistant that helps the user document classes.
-        You will be supplied with the content of a file, and your task is to provide a concise description of its purpose and functionality.
-        Describe the purpose of the class in a few sentences.
+        You will be supplied with the content of a file and (optionally) the already existing documentation, and your task is to provide a concise description of its purpose and functionality and to determine whether you should update de existing documentation if applicable.
+        
+        Instructions:
+        - Describe the purpose of the class in a few sentences.
+        - Be short and clear, I want to be able to see what the function does efficiently.
+        - if the existing documentation is already sufficient, do not change it and return an empty string.
         
         The summary should be in the following format: /// <summary>\n/// <purpose of the class>\n/// </summary>
     """";
