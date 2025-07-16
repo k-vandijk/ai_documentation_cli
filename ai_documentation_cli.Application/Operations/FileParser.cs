@@ -4,11 +4,15 @@ using System.Text.RegularExpressions;
 namespace ai_documentation_cli.Application.Operations;
 
 /// <summary>
-/// This class provides methods for parsing a file containing C# code to extract class and method definitions along with their documentation.
-/// It includes functionality to read lines from a file, parse classes, parse functions, and extract code blocks for classes or functions.
+/// A utility class containing methods for parsing contents of C# code files to extract class and method documentation.
 /// </summary>
 public static class FileParser
 {
+    /// <summary>
+    /// Retrieves the lines from a specified file and returns a list of Line objects.
+    /// </summary>
+    /// <param name="path">The path to the file from which to read the lines.</param>
+    /// <returns>A list of Line objects containing unique identifiers and the content of each line in the file.</returns>
     public static List<Line> GetFileLines(string path)
     {
         if (!File.Exists(path))
@@ -19,6 +23,13 @@ public static class FileParser
         return File.ReadLines(path).Select(l => new Line { UniqueIdentifier = UniqueIdentifierGenerator.GenerateShortUniqueIdentifier(), Content = l }).ToList();
     }
 
+    // TODO find a way to refactor this so that it can be used for both classes and functions
+
+    /// <summary>
+    /// Parses the list of lines to extract class, record, or struct definitions in C# code.
+    /// </summary>
+    /// <param name="lines">The list of Line objects representing lines of code to parse.</param>
+    /// <returns>A list of ClassDocumentation objects containing information about the parsed classes.</returns>
     public static List<ClassDocumentation> ParseClasses(List<Line> lines)
     {
         // This regex matches class, record, or struct definitions in C# code.
@@ -61,6 +72,11 @@ public static class FileParser
         return classes;
     }
 
+    /// <summary>
+    /// Parses the provided list of lines containing C# code to extract and document functions defined within the code.
+    /// </summary>
+    /// <param name="lines">The list of Line objects representing lines of C# code to parse.</param>
+    /// <returns>A List of FunctionDocumentation objects representing the parsed functions with their respective documentation.</returns>
     public static List<FunctionDocumentation> ParseFunctions(List<Line> lines)
     {
         // This regex matches method definitions in C# code.
@@ -92,10 +108,26 @@ public static class FileParser
             }
         }
 
+        foreach (var funcDoc in functions)
+        {
+            var summaryLines = GetXmlDocumentationLinesAt(funcDoc.Lines.First().UniqueIdentifier, lines);
+
+            if (summaryLines.Any())
+            {
+                funcDoc.Summary = string.Join("\n", summaryLines.Select(l => l.Content.Trim()));
+            }
+        }
+
         return functions;
     }
 
-    private static List<Line> GetXmlDocumentationLinesAt(string lineId, List<Line> lines)
+    /// <summary>
+    /// Retrieves the XML documentation lines located above a specific line identified by its unique identifier in a list of lines.
+    /// </summary>
+    /// <param name="lineId">The unique identifier of the line to search for.</param>
+    /// <param name="lines">The list of lines where the specific line is located.</param>
+    /// <returns>A list of Line objects that represent the XML documentation lines above the line with the specified unique identifier.</returns>
+    public static List<Line> GetXmlDocumentationLinesAt(string lineId, List<Line> lines)
     {
         int i = lines.FindIndex(l => l.UniqueIdentifier == lineId) - 1; // Start from the line before the method or class declaration
         var result = new List<Line>();
@@ -108,6 +140,12 @@ public static class FileParser
         return result;
     }
 
+    /// <summary>
+    /// Extracts a block of lines starting from the current index until the corresponding closing brace is found.
+    /// </summary>
+    /// <param name="lines">The list of lines from which to extract the block.</param>
+    /// <param name="index">The index to start extracting the block from. This will be updated to the index after the extracted block.</param>
+    /// <returns>A list of lines representing the extracted block.</returns>
     private static List<Line> ExtractBlock(List<Line> lines, ref int index)
     {
         var block = new List<Line>();

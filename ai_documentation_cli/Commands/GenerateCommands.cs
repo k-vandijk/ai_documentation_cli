@@ -40,12 +40,43 @@ public class GenerateCommands
             var prompt = PromptBuilder.BuildPrompt(stringifiedClass, c.Summary);
             var classSummary = await _chatCompletionService.GetChatCompletionAsync(prompt, Instructions.ClassDocumentationInstructions);
 
-            if (!string.IsNullOrEmpty(classSummary.Trim()))
+            if (!classSummary.Trim().Contains("<sufficient>"))
             {
                 c.Summary = classSummary;
 
+                // Remove existing summary lines if they exist
+                var existingSummaryLines = FileParser.GetXmlDocumentationLinesAt(c.Lines.First().UniqueIdentifier, lines);
+                if (existingSummaryLines.Any())
+                {
+                    lines = lines.Where(l => existingSummaryLines.All(el => el.UniqueIdentifier != l.UniqueIdentifier)).ToList();
+                }
+
                 var linesToInsert = FileInserter.SplitSummaryIntoLines(classSummary);
                 lines = FileInserter.InsertLinesAt(c.Lines.First().UniqueIdentifier, linesToInsert, lines);
+
+                await File.WriteAllLinesAsync(file, lines.Select(l => l.Content));
+            }
+        }
+
+        foreach (var f in parsedFile.Functions)
+        {
+            var stringifiedFunction = string.Join("\n", f.Lines.Select(l => l.Content));
+            var prompt = PromptBuilder.BuildPrompt(stringifiedFunction, f.Summary);
+            var classSummary = await _chatCompletionService.GetChatCompletionAsync(prompt, Instructions.FunctionDocumentationInstructions);
+
+            if (!classSummary.Trim().Contains("<sufficient>"))
+            {
+                f.Summary = classSummary;
+
+                // Remove existing summary lines if they exist
+                var existingSummaryLines = FileParser.GetXmlDocumentationLinesAt(f.Lines.First().UniqueIdentifier, lines);
+                if (existingSummaryLines.Any())
+                {
+                    lines = lines.Where(l => existingSummaryLines.All(el => el.UniqueIdentifier != l.UniqueIdentifier)).ToList();
+                }
+
+                var linesToInsert = FileInserter.SplitSummaryIntoLines(classSummary);
+                lines = FileInserter.InsertLinesAt(f.Lines.First().UniqueIdentifier, linesToInsert, lines);
 
                 await File.WriteAllLinesAsync(file, lines.Select(l => l.Content));
             }

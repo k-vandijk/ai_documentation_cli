@@ -14,3 +14,13 @@ This project follows the principles of Clean Architecture, which emphasizes sepa
   - Framework‑agnostic core  
   - Easy testing and swapping of UI/infrastructure  
   - Clear separation of concerns
+
+# Environment variables
+
+The following environment variables are required for the application to run:
+
+```.env
+AZURE_OPENAI_URL = x
+AZURE_OPENAI_KEY = x
+AZURE_DEPLOYMENT_NAME = x
+```
