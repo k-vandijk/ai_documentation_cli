@@ -1,7 +1,7 @@
 ﻿using ai_documentation_cli.Application.Operations;
 using Cocona;
 
-namespace ai_documentation_cli.Commands;
+namespace ai_documentation_cli.App.Commands;
 
 public class ListCommands
 {

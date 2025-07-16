@@ -1,4 +1,4 @@
-﻿namespace ai_documentation_cli;
+﻿namespace ai_documentation_cli.App;
 
 public static class Instructions
 {

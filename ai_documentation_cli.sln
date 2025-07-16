@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		CONTRIBUTE.md = CONTRIBUTE.md
 		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
 		NuGet.config = NuGet.config
 		README.md = README.md
 	EndProjectSection
@@ -21,6 +22,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ai_documentation_cli.Domain", "ai_documentation_cli.Domain\ai_documentation_cli.Domain.csproj", "{2FB2D937-1BE3-4B78-A2AE-2D39FFBCED5F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ai_documentation_cli.Infrastructure", "ai_documentation_cli.Infrastructure\ai_documentation_cli.Infrastructure.csproj", "{F685AA2A-9772-4C80-B9B3-B1D5DB820DE6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{30151DAD-950D-4C36-9FE6-3D380D1A55D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +50,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{728042DA-8ACB-45B3-9C1C-0686819F6208} = {30151DAD-950D-4C36-9FE6-3D380D1A55D0}
+		{F7B04D12-5B89-458A-AA56-E60EA5BF614F} = {30151DAD-950D-4C36-9FE6-3D380D1A55D0}
+		{2FB2D937-1BE3-4B78-A2AE-2D39FFBCED5F} = {30151DAD-950D-4C36-9FE6-3D380D1A55D0}
+		{F685AA2A-9772-4C80-B9B3-B1D5DB820DE6} = {30151DAD-950D-4C36-9FE6-3D380D1A55D0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {928448C3-079B-43B0-A4A5-50B8A7FCEA2E}

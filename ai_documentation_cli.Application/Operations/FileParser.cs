@@ -93,15 +93,10 @@ public static class FileParser
 
                 var sigLine = block.FirstOrDefault()?.Content.Trim() ?? string.Empty;
 
-                var parameters = ParseParametersWithRoslyn(sigLine);
-                var returnType = ParseReturnTypeWithRoslyn(sigLine);
-
                 functions.Add(new FunctionDocumentationDto
                 {
                     Summary = string.Empty,
                     Lines = block,
-                    Parameters = parameters,
-                    ReturnType = returnType,
                 });
             }
         }
@@ -121,12 +116,12 @@ public static class FileParser
 
         if (method == null)
         {
-            return new ReturnTypeDto { Description = "unknown" };
+            return new ReturnTypeDto { Type = "unknown" };
         }
 
         return new ReturnTypeDto
         {
-            Description = method.ReturnType.ToString(),
+            Type = method.ReturnType.ToString(),
         };
     }
 

@@ -3,7 +3,7 @@ using ai_documentation_cli.Application.Operations;
 using ai_documentation_cli.Domain.Dtos;
 using Cocona;
 
-namespace ai_documentation_cli.Commands;
+namespace ai_documentation_cli.App.Commands;
 
 // TODO this code needs to be refactored.
 // TODO Make sure that when documentation already exists, it determines whether to overwrite it or not.

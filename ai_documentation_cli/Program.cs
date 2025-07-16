@@ -1,4 +1,4 @@
-﻿using ai_documentation_cli.Commands;
+﻿using ai_documentation_cli.App.Commands;
 using Cocona;
 using kvandijk.Common.Utils;
 

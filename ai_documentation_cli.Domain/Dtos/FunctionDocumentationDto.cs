@@ -1,9 +1,9 @@
-﻿namespace ai_documentation_cli.Domain.Dtos;
+﻿using ai_documentation_cli.Domain.Interfaces;
 
-public class FunctionDocumentationDto
+namespace ai_documentation_cli.Domain.Dtos;
+
+public class FunctionDocumentationDto : IDocumentable
 {
     public string Summary { get; set; } = string.Empty;
     public List<LineDto> Lines { get; set; } = new ();
-    public List<ParameterDto> Parameters { get; set; } = new ();
-    public ReturnTypeDto ReturnType { get; set; } = new ();
 }
