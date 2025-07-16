@@ -1,11 +1,16 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 using ai_documentation_cli.Dtos;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace ai_documentation_cli.Operations;
 
-public static class FileOperations
+/// <summary>
+/// This static class provides methods for parsing a file containing C# code to extract class and method definitions.
+/// It includes functionality to retrieve all lines from a file, parse class definitions, and parse method definitions.
+/// The class utilizes regular expressions and the Roslyn syntax tree to extract and document classes and methods efficiently.
+/// </summary>
+public static class FileParser
 {
     public static List<LineDto> GetFileLines(string path)
     {
@@ -14,7 +19,7 @@ public static class FileOperations
             throw new FileNotFoundException($"The file '{path}' does not exist.");
         }
 
-        return File.ReadLines(path).Select(l => new LineDto { UniqueIdentifier = GenerateShortUniqueIdentifier(), Content = l }).ToList();
+        return File.ReadLines(path).Select(l => new LineDto { UniqueIdentifier = UniqueIdentifierGenerator.GenerateShortUniqueIdentifier(), Content = l }).ToList();
     }
 
     public static List<ClassDocumentationDto> ParseClasses(List<LineDto> lines)
@@ -88,7 +93,7 @@ public static class FileOperations
         return functions;
     }
 
-    public static ReturnTypeDto ParseReturnTypeWithRoslyn(string methodSignature)
+    private static ReturnTypeDto ParseReturnTypeWithRoslyn(string methodSignature)
     {
         var dummyCode = $"class Dummy {{ {methodSignature} {{ }} }}";
         var tree = CSharpSyntaxTree.ParseText(dummyCode);
@@ -109,7 +114,7 @@ public static class FileOperations
         };
     }
 
-    public static List<ParameterDto> ParseParametersWithRoslyn(string methodSignature)
+    private static List<ParameterDto> ParseParametersWithRoslyn(string methodSignature)
     {
         var fullMethod = $"class Dummy {{ {methodSignature} {{ }} }}";
         var tree = CSharpSyntaxTree.ParseText(fullMethod);
@@ -130,11 +135,6 @@ public static class FileOperations
             .ToList();
     }
 
-    private static string GenerateShortUniqueIdentifier()
-    {
-        return Guid.NewGuid().ToString("N").Substring(0, 8);
-    }
-
     /// <summary>
     /// This function extracts a block of code from the list of lines, starting from the current index.
     /// It counts the opening and closing braces to determine when the block ends.
@@ -142,6 +142,12 @@ public static class FileOperations
     /// <param name="lines">The lines for the function to loop through; Generally all lines of the file.</param>
     /// <param name="index">The starting line, generally the declaration of a class/function.</param>
     /// <returns>The full list of lines of the class/function.</returns>
+/// <summary>
+/// Extracts a block of lines from a list of LineDto objects starting at the specified index up to the matching closing brace.
+/// </summary>
+/// <param name="lines">The list of LineDto objects containing the lines to extract the block from.</param>
+/// <param name="index">The index at which to start extracting the block. Will be updated to the index of the next line after the block.</param>
+/// <returns>A List of LineDto objects representing the extracted block of lines.</returns>
     private static List<LineDto> ExtractBlock(List<LineDto> lines, ref int index)
     {
         var block = new List<LineDto>();
