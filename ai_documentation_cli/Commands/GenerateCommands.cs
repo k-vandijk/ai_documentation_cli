@@ -1,9 +1,12 @@
-﻿using ai_documentation_cli.Dtos;
-using ai_documentation_cli.Interfaces;
-using ai_documentation_cli.Operations;
+﻿using ai_documentation_cli.Application.Interfaces;
+using ai_documentation_cli.Application.Operations;
+using ai_documentation_cli.Domain.Dtos;
 using Cocona;
 
 namespace ai_documentation_cli.Commands;
+
+// TODO this code needs to be refactored.
+// TODO Make sure that when documentation already exists, it determines whether to overwrite it or not.
 
 public class GenerateCommands
 {

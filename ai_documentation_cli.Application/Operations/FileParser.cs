@@ -1,9 +1,9 @@
-using System.Text.RegularExpressions;
-using ai_documentation_cli.Dtos;
+using ai_documentation_cli.Domain.Dtos;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Text.RegularExpressions;
 
-namespace ai_documentation_cli.Operations;
+namespace ai_documentation_cli.Application.Operations;
 
 /// <summary>
 /// This class provides methods for parsing a file containing C# code to extract class and method definitions along with their documentation.

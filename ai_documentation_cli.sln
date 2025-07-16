@@ -3,16 +3,24 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36301.6
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ai_documentation_cli", "ai_documentation_cli\ai_documentation_cli.csproj", "{728042DA-8ACB-45B3-9C1C-0686819F6208}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ai_documentation_cli.App", "ai_documentation_cli\ai_documentation_cli.App.csproj", "{728042DA-8ACB-45B3-9C1C-0686819F6208}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		.env = .env
 		.gitignore = .gitignore
-		README.md = README.md
+		CONTRIBUTE.md = CONTRIBUTE.md
+		Directory.Build.props = Directory.Build.props
 		NuGet.config = NuGet.config
-		.editorconfig = .editorconfig
+		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ai_documentation_cli.Application", "ai_documentation_cli.Application\ai_documentation_cli.Application.csproj", "{F7B04D12-5B89-458A-AA56-E60EA5BF614F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ai_documentation_cli.Domain", "ai_documentation_cli.Domain\ai_documentation_cli.Domain.csproj", "{2FB2D937-1BE3-4B78-A2AE-2D39FFBCED5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ai_documentation_cli.Infrastructure", "ai_documentation_cli.Infrastructure\ai_documentation_cli.Infrastructure.csproj", "{F685AA2A-9772-4C80-B9B3-B1D5DB820DE6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +32,18 @@ Global
 		{728042DA-8ACB-45B3-9C1C-0686819F6208}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{728042DA-8ACB-45B3-9C1C-0686819F6208}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{728042DA-8ACB-45B3-9C1C-0686819F6208}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7B04D12-5B89-458A-AA56-E60EA5BF614F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7B04D12-5B89-458A-AA56-E60EA5BF614F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7B04D12-5B89-458A-AA56-E60EA5BF614F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7B04D12-5B89-458A-AA56-E60EA5BF614F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FB2D937-1BE3-4B78-A2AE-2D39FFBCED5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FB2D937-1BE3-4B78-A2AE-2D39FFBCED5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FB2D937-1BE3-4B78-A2AE-2D39FFBCED5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FB2D937-1BE3-4B78-A2AE-2D39FFBCED5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F685AA2A-9772-4C80-B9B3-B1D5DB820DE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F685AA2A-9772-4C80-B9B3-B1D5DB820DE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F685AA2A-9772-4C80-B9B3-B1D5DB820DE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F685AA2A-9772-4C80-B9B3-B1D5DB820DE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,4 @@
-﻿namespace ai_documentation_cli.Exceptions;
+﻿namespace ai_documentation_cli.Domain.Exceptions;
 
 public class ChatCompletionException : Exception
 {

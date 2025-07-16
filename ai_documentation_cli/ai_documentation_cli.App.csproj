@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Cocona" />
+    <PackageReference Include="kvandijk.Common" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ai_documentation_cli.Application\ai_documentation_cli.Application.csproj" />
+    <ProjectReference Include="..\ai_documentation_cli.Infrastructure\ai_documentation_cli.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

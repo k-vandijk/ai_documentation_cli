@@ -1,11 +1,11 @@
-﻿using System.ClientModel;
-using ai_documentation_cli.Exceptions;
-using ai_documentation_cli.Interfaces;
+﻿using ai_documentation_cli.Application.Interfaces;
+using ai_documentation_cli.Domain.Exceptions;
 using Azure.AI.OpenAI;
 using Microsoft.Extensions.Logging;
 using OpenAI.Chat;
+using System.ClientModel;
 
-namespace ai_documentation_cli.Services;
+namespace ai_documentation_cli.Infrastructure.Services;
 
 public class ChatCompletionService : IChatCompletionService
 {

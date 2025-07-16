@@ -1,4 +1,4 @@
-﻿using ai_documentation_cli.Operations;
+﻿using ai_documentation_cli.Application.Operations;
 using Cocona;
 
 namespace ai_documentation_cli.Commands;

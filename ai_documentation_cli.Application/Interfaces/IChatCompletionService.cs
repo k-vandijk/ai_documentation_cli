@@ -1,4 +1,4 @@
-﻿namespace ai_documentation_cli.Interfaces;
+﻿namespace ai_documentation_cli.Application.Interfaces;
 
 public interface IChatCompletionService
 {

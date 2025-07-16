@@ -1,6 +1,8 @@
-using ai_documentation_cli.Dtos;
+using ai_documentation_cli.Domain.Dtos;
 
-namespace ai_documentation_cli.Operations;
+namespace ai_documentation_cli.Application.Operations;
+
+// TODO this code needs to be refactored.
 
 /// <summary>
 /// This static class provides methods for inserting lines at a specific point in a list of lines and splitting a summary into separate lines.
@@ -22,7 +24,6 @@ public static class FileInserter
         }
 
         var result = new List<LineDto>();
-
         foreach (var line in lines)
         {
             if (line.UniqueIdentifier == lineId)

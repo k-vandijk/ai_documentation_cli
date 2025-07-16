@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.FileSystemGlobbing;
 
-namespace ai_documentation_cli.Operations;
+namespace ai_documentation_cli.Application.Operations;
 
 public static class DocumentignoreOperations
 {

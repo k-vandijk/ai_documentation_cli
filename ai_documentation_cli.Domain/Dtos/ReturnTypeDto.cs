@@ -1,4 +1,4 @@
-﻿namespace ai_documentation_cli.Dtos;
+﻿namespace ai_documentation_cli.Domain.Dtos;
 
 public class ReturnTypeDto
 {
