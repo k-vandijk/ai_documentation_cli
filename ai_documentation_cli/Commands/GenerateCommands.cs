@@ -1,4 +1,4 @@
-﻿using ai_documentation_cli.Application.Interfaces;
+using ai_documentation_cli.Application.Interfaces;
 using ai_documentation_cli.Application.Operations;
 using ai_documentation_cli.Domain.Exceptions;
 using ai_documentation_cli.Domain.Models;
@@ -6,6 +6,9 @@ using Cocona;
 
 namespace ai_documentation_cli.App.Commands;
 
+/// <summary>
+/// Generates documentation for files or directories based on provided input. Handles the generation process for commands.
+/// </summary>
 public class GenerateCommands
 {
     private readonly IChatCompletionService _chatCompletionService;
@@ -16,6 +19,13 @@ public class GenerateCommands
     }
 
     [Command("generate")]
+    /// <summary>
+    /// Generates documentation for either a file or all relevant files in a directory.
+    /// </summary>
+    /// <param name="file">The path of the file for which documentation needs to be generated.</param>
+    /// <param name="dir">The directory path containing files for documentation generation.</param>
+    /// <param name="additionalQuery">Additional query parameters for the documentation generation process.</param>
+    /// <returns>Task representing the asynchronous documentation generation process.</returns>
     public async Task Execute([Option("file")] string? file, [Option("dir")] string? dir, [Option("query")] string? additionalQuery)
     {
         if (string.IsNullOrEmpty(file) && string.IsNullOrEmpty(dir))
@@ -48,6 +58,11 @@ public class GenerateCommands
 
     // TODO: RELOCATE: This file is meant only for Commands, any handlers or helpers should be moved elsewhere.
 
+    /// <summary>
+    /// Checks whether the given summary string needs to be updated.
+    /// </summary>
+    /// <param name="summary">The summary string to be checked.</param>
+    /// <returns>True if the summary needs to be updated, otherwise false.</returns>
     private static bool ShouldUpdateSummary(string summary)
     {
         return !summary.Trim().Contains("<sufficient>");
@@ -55,6 +70,13 @@ public class GenerateCommands
 
     // TODO: RELOCATE: This file is meant only for Commands, any handlers or helpers should be moved elsewhere.
 
+    /// <summary>
+    /// Replaces the existing summary of a specific anchor with a new summary in a list of lines.
+    /// </summary>
+    /// <param name="anchorId">The unique identifier of the anchor where the summary should be replaced.</param>
+    /// <param name="newSummary">The new summary to replace the existing one.</param>
+    /// <param name="lines">The list of lines containing the existing summary to be replaced.</param>
+    /// <returns>A list of lines with the updated summary.</returns>
     private static List<Line> ReplaceExistingSummary(string anchorId, string newSummary, List<Line> lines)
     {
         var existingSummaryLines = FileParser.GetXmlDocumentationLinesAt(anchorId, lines);
@@ -71,6 +93,11 @@ public class GenerateCommands
 
     // TODO: RELOCATE: This file is meant only for Commands, any handlers or helpers should be moved elsewhere.
 
+    /// <summary>
+    /// Asynchronously generates documentation for classes and functions found in a specified file.
+    /// </summary>
+    /// <param name="file">The path of the file to generate documentation for.</param>
+    /// <returns>A task representing the asynchronous documentation generation process.</returns>
     private async Task HandleDocumentationGenerationForFile(string file)
     {
         var lines = FileParser.GetFileLines(file);
@@ -93,6 +120,12 @@ public class GenerateCommands
 
     // TODO: RELOCATE: This file is meant only for Commands, any handlers or helpers should be moved elsewhere.
 
+    /// <summary>
+    /// Processes a class documentation by generating a prompt based on the class content and summary, then updating the summary if needed.
+    /// </summary>
+    /// <param name="c">The ClassDocumentation object containing information about the class.</param>
+    /// <param name="lines">The list of Line objects representing the lines of the class documentation.</param>
+    /// <returns>The updated list of Line objects after processing the class documentation.</returns>
     private async Task<List<Line>> ProcessClassDocumentation(ClassDocumentation c, List<Line> lines)
     {
         var content = string.Join("\n", c.Lines.Select(l => l.Content));
@@ -110,6 +143,12 @@ public class GenerateCommands
 
     // TODO: RELOCATE: This file is meant only for Commands, any handlers or helpers should be moved elsewhere.
 
+    /// <summary>
+    /// Processes the function documentation by updating the summary in the provided FunctionDocumentation object and returning the updated list of lines.
+    /// </summary>
+    /// <param name="f">The FunctionDocumentation object containing the documentation details to be processed.</param>
+    /// <param name="lines">The list of lines containing the content of the documentation.</param>
+    /// <returns>The updated list of lines after processing the function documentation.</returns>
     private async Task<List<Line>> ProcessFunctionDocumentation(FunctionDocumentation f, List<Line> lines)
     {
         var content = string.Join("\n", f.Lines.Select(l => l.Content));
