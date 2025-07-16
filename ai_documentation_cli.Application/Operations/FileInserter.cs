@@ -2,8 +2,6 @@ using ai_documentation_cli.Domain.Models;
 
 namespace ai_documentation_cli.Application.Operations;
 
-// TODO this code needs to be refactored.
-
 /// <summary>
 /// This static class provides methods for inserting lines at a specific point in a list of lines and splitting a summary into separate lines.
 /// </summary>
@@ -45,6 +43,8 @@ public static class FileInserter
 
         return result;
     }
+
+    // TODO: This function should be moved to a separate class, as it is not related to file insertion.
 
     /// <summary>
     /// This function takes a summary string and splits it into individual lines.

@@ -1,15 +1,12 @@
 ﻿using ai_documentation_cli.Application.Interfaces;
 using ai_documentation_cli.Application.Operations;
+using ai_documentation_cli.Domain.Exceptions;
 using ai_documentation_cli.Domain.Models;
 using Cocona;
 
 namespace ai_documentation_cli.App.Commands;
 
 // TODO this code needs to be refactored.
-// TODO Make sure that when documentation already exists, it determines whether to overwrite it or not.
-// - I already have instructed the LLM
-// - All needed to do is to parse the existing documentation, and return it with the Documentation model
-// - Then test the code with a file that has existing documentation, and fix any issues that arise.
 
 public class GenerateCommands
 {
@@ -25,7 +22,7 @@ public class GenerateCommands
     {
         if (string.IsNullOrEmpty(file))
         {
-            throw new ArgumentException("The 'file' option must be provided.");
+            throw new FileNotIncludedException("The 'file' parameter must be provided.");
         }
 
         var lines = FileParser.GetFileLines(file);
