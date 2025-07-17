@@ -13,4 +13,8 @@
     <PackageReference Include="StyleCop.Analyzers"><PrivateAssets>all</PrivateAssets></PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+
 </Project>

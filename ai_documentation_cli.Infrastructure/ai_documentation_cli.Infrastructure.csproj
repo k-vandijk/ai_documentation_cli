@@ -6,7 +6,6 @@
   </ItemGroup>
 
   <ItemGroup Label="Runtime dependencies">
-    <PackageReference Include="Azure.AI.OpenAI" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" />
   </ItemGroup>
 

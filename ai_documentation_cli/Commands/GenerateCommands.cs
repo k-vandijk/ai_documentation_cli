@@ -1,10 +1,10 @@
-using ai_documentation_cli.Application.Interfaces;
+using ai_documentation_cli.App;
 using ai_documentation_cli.Application.Operations;
-using ai_documentation_cli.Domain.Exceptions;
 using ai_documentation_cli.Domain.Models;
 using Cocona;
+using kvandijk.Common.Interfaces;
 
-namespace ai_documentation_cli.App.Commands;
+namespace ai_documentation_cli.Commands;
 
 // TODO: Add validation, for example, check if there are not too many files in the directory.
 // TODO: Make sure the Xml is added before the function attributes.

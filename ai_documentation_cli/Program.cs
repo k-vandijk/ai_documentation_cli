@@ -1,7 +1,7 @@
 ﻿using ai_documentation_cli.App.Commands;
-using ai_documentation_cli.Infrastructure;
+using ai_documentation_cli.Commands;
 using Cocona;
-using kvandijk.Common.Utils;
+using kvandijk.Common.Extensions;
 
 #if DEBUG
 DotenvLoader.Load(".env");
@@ -9,7 +9,7 @@ DotenvLoader.Load(".env");
 
 var builder = CoconaApp.CreateBuilder();
 
-builder.Services.AddInfrastructure();
+builder.Services.AddChatCompletions();
 
 var app = builder.Build();
 
