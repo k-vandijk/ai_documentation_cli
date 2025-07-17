@@ -1,4 +1,4 @@
-﻿using ai_documentation_cli.Domain.Models;
+using ai_documentation_cli.Domain.Models;
 
 namespace ai_documentation_cli.Domain.Interfaces;
 

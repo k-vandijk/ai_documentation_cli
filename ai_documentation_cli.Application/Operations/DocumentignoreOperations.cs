@@ -1,9 +1,17 @@
-﻿using Microsoft.Extensions.FileSystemGlobbing;
+using Microsoft.Extensions.FileSystemGlobbing;
 
 namespace ai_documentation_cli.Application.Operations;
 
+/// <summary>
+/// Provides functionality to build a matcher based on document ignore patterns specified in a '.documentignore' file.
+/// </summary>
 public static class DocumentignoreOperations
 {
+    /// <summary>
+    /// Build a matcher instance based on the list of document ignore patterns for a specified root path.
+    /// </summary>
+    /// <param name="rootPath">The root path directory where the document ignore patterns should be applied.</param>
+    /// <returns>A constructed Matcher object configured with include and exclude patterns for files and directories.</returns>
     public static Matcher BuildMatcher(string rootPath)
     {
         var patterns = ReadDocumentIgnorePatterns(rootPath);

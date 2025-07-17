@@ -1,5 +1,8 @@
-﻿namespace ai_documentation_cli.Domain.Exceptions;
+namespace ai_documentation_cli.Domain.Exceptions;
 
+/// <summary>
+/// Represents an exception thrown when a required file is not included.
+/// </summary>
 public class FileNotIncludedException : Exception
 {
     public FileNotIncludedException()
