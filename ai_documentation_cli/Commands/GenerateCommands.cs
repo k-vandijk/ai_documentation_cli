@@ -6,6 +6,9 @@ using Cocona;
 
 namespace ai_documentation_cli.App.Commands;
 
+// TODO: Add validation, for example, check if there are not too many files in the directory.
+// TODO: Make sure the Xml is added before the function attributes.
+
 /// <summary>
 /// Generates documentation for files or directories based on provided input. Handles the generation process for commands.
 /// </summary>
@@ -18,7 +21,6 @@ public class GenerateCommands
         _chatCompletionService = chatCompletionService;
     }
 
-    [Command("generate")]
     /// <summary>
     /// Generates documentation for either a file or all relevant files in a directory.
     /// </summary>
@@ -26,6 +28,7 @@ public class GenerateCommands
     /// <param name="dir">The directory path containing files for documentation generation.</param>
     /// <param name="additionalQuery">Additional query parameters for the documentation generation process.</param>
     /// <returns>Task representing the asynchronous documentation generation process.</returns>
+    [Command("generate")]
     public async Task Execute([Option("file")] string? file, [Option("dir")] string? dir, [Option("query")] string? additionalQuery)
     {
         if (string.IsNullOrEmpty(file) && string.IsNullOrEmpty(dir))

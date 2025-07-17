@@ -4,3 +4,5 @@ NuGet.config
 bin/
 obj/
 .vs/
+
+nupkg/

@@ -1,3 +1,7 @@
+- [Introduction & purpose](#introduction--purpose)
+- [List of commands](#list-of-commands)
+- [.documentignore example](#documentignore-example)
+
 # Introduction & purpose
 
 A command line interface for generating documentation using AI.
@@ -6,13 +10,16 @@ The application will search every .cs file in the current directory and generate
 
 # List of commands
 
-## `generate --file <filename>`
+### `generate --file <filename>`
 Generate documentation for a specific file
 
-## `list --dir <directory>`
+### `generate --dir <directory>`
+Generate documentation for all files in the specified directory
+
+### `list --dir <directory>`
 List all relevant files in the current directory, or if a directory is specified, in that directory.
 
-# `.documentignore` example
+# .documentignore example
 
 ``` plaintext
 # Ignore build output

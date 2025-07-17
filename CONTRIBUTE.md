@@ -24,3 +24,17 @@ AZURE_OPENAI_URL = x
 AZURE_OPENAI_KEY = x
 AZURE_DEPLOYMENT_NAME = x
 ```
+
+# How to pack and install the package
+
+```
+dotnet pack --configuration Release
+```
+
+```
+dotnet tool install --global --add-source ./nupkg ai_documentation_cli
+```
+
+```
+dotnet tool uninstall -g ai_documentation_cli
+```
