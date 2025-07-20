@@ -11,7 +11,7 @@ A command line interface for generating documentation using AI.
 
 The application will search every .cs file in the current directory and generate documentation for each class, method, and property using OpenAi's ChatGPT.
 
-# How to use
+# How to setup
 
 Install the tool using the following command:
 ```bash
