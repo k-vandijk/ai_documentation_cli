@@ -1,4 +1,11 @@
-﻿# Clean Architecture
+﻿# Contents
+
+- [Contributing](#contributing)
+- [Clean Architecture](#clean-architecture)
+- [Environment variables](#environment-variables)
+- [How to pack and install the package](#how-to-pack-and-install-the-package)
+
+# Clean Architecture
 
 This project follows the principles of Clean Architecture, which emphasizes separation of concerns and independence from frameworks.
 
