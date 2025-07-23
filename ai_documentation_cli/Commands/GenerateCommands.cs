@@ -7,9 +7,6 @@ namespace ai_documentation_cli.Commands;
 // TODO: Add validation, for example, check if there are not too many files in the directory.
 // TODO: Make sure the Xml is added before the function attributes.
 
-/// <summary>
-/// Generates documentation for files or directories based on provided input. Handles the generation process for commands.
-/// </summary>
 public class GenerateCommands
 {
     private readonly IDocumentationGenerationService _documentationGenerationService;
@@ -19,12 +16,6 @@ public class GenerateCommands
         _documentationGenerationService = documentationGenerationService;
     }
 
-    /// <summary>
-    /// Generates documentation for either a file or all relevant files in a directory.
-    /// </summary>
-    /// <param name="file">The path of the file for which documentation needs to be generated.</param>
-    /// <param name="dir">The directory path containing files for documentation generation.</param>
-    /// <returns>Task representing the asynchronous documentation generation process.</returns>
     [Command("generate")]
     public async Task Execute([Option("file")] string? file, [Option("dir")] string? dir)
     {
