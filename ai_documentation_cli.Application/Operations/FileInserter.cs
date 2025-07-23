@@ -44,8 +44,6 @@ public static class FileInserter
         return result;
     }
 
-    // TODO: RELOCATE: This function should be moved to a separate class, as it is not related to file insertion.
-
     /// <summary>
     /// This function takes a summary string and splits it into individual lines.
     /// </summary>

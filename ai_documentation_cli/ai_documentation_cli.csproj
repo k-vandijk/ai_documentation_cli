@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ai_documentation_cli.Application\ai_documentation_cli.Application.csproj" />
+    <ProjectReference Include="..\ai_documentation_cli.Infrastructure\ai_documentation_cli.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup Label="Runtime dependencies">

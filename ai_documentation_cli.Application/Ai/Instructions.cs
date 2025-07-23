@@ -1,4 +1,4 @@
-namespace ai_documentation_cli.App;
+namespace ai_documentation_cli.Application.Ai;
 
 /// <summary>
 /// Provides instructions for an AI assistant that helps users document C# classes and functions.

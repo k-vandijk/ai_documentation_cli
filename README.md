@@ -19,8 +19,8 @@ Install the tool using the following command:
 
 Set your environment variables using the following commands:
 ```bash
-$env:AZURE_OPENAI_URL=*
-$env:AZURE_OPENAI_KEY=*
+$env:AZURE_OPENAI_URL=<YOUR_AZOPENAI_URL>
+$env:AZURE_OPENAI_KEY=<YOUR_AZOPENAI_KEY>
 $env:AZURE_DEPLOYMENT_NAME="gpt-35-turbo"
 ```
 

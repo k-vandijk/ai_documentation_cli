@@ -1,10 +1,10 @@
 ﻿using ai_documentation_cli.Commands;
+using ai_documentation_cli.Infrastructure;
 using Cocona;
-using kvandijk.Common.Extensions;
 
 var builder = CoconaApp.CreateBuilder();
 
-builder.Services.AddChatCompletions();
+builder.Services.AddInfrastructure();
 
 var app = builder.Build();
 
