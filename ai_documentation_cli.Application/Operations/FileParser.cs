@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using ai_documentation_cli.Domain.Interfaces;
 using ai_documentation_cli.Domain.Models;
 
 namespace ai_documentation_cli.Application.Operations;
@@ -23,9 +24,6 @@ public static class FileParser
         return File.ReadLines(path).Select(l => new Line { UniqueIdentifier = UniqueIdentifierGenerator.GenerateShortUniqueIdentifier(), Content = l }).ToList();
     }
 
-    // TODO find a way to refactor ParseClasses and ParseFunctions so that it can be used for both classes and functions
-    // DO THIS BEFORE ANY OTHER CHANGES TO THESE FUNCTIONS!!!
-
     /// <summary>
     /// Parses the list of lines to extract class, record, or struct definitions in C# code.
     /// </summary>
@@ -38,37 +36,8 @@ public static class FileParser
         // It does not match generic types or nested classes.
         // It assumes that the class definition is on a single line, which is common in C#.
         var classRegex = new Regex(@"\b(class|record|struct)\s+\w+", RegexOptions.Compiled);
-        var classes = new List<ClassDocumentation>();
 
-        for (int i = 0; i < lines.Count; i++)
-        {
-            var trimmed = lines[i].Content.TrimStart();
-            if (trimmed.StartsWith("//"))
-            {
-                continue;
-            }
-
-            if (classRegex.IsMatch(lines[i].Content.Trim()))
-            {
-                var block = ExtractBlock(lines, ref i);
-
-                classes.Add(new ClassDocumentation
-                {
-                    Summary = string.Empty,
-                    Lines = block,
-                });
-            }
-        }
-
-        foreach (var classDoc in classes)
-        {
-            var summaryLines = GetXmlDocumentationLinesAt(classDoc.Lines.First().UniqueIdentifier, lines);
-
-            if (summaryLines.Any())
-            {
-                classDoc.Summary = string.Join("\n", summaryLines.Select(l => l.Content.Trim()));
-            }
-        }
+        var classes = ParseGeneric<ClassDocumentation>(lines, classRegex);
 
         return classes;
     }
@@ -85,37 +54,8 @@ public static class FileParser
         // followed by a return type (which can include generics), a method name, and a parameter list.
         // It does not match method signatures that are split across multiple lines.
         var methodRegex = new Regex(@"^\s*(public|protected|internal|private)\s+(static\s+)?(async\s+)?[\w<>\[\],]+\s+\w+\s*\(.*?\)\s*$", RegexOptions.Compiled);
-        var functions = new List<FunctionDocumentation>();
 
-        for (int i = 0; i < lines.Count; i++)
-        {
-            var trimmed = lines[i].Content.TrimStart();
-            if (trimmed.StartsWith("//"))
-            {
-                continue;
-            }
-
-            if (methodRegex.IsMatch(lines[i].Content.Trim()))
-            {
-                var block = ExtractBlock(lines, ref i);
-
-                functions.Add(new FunctionDocumentation
-                {
-                    Summary = string.Empty,
-                    Lines = block,
-                });
-            }
-        }
-
-        foreach (var funcDoc in functions)
-        {
-            var summaryLines = GetXmlDocumentationLinesAt(funcDoc.Lines.First().UniqueIdentifier, lines);
-
-            if (summaryLines.Any())
-            {
-                funcDoc.Summary = string.Join("\n", summaryLines.Select(l => l.Content.Trim()));
-            }
-        }
+        var functions = ParseGeneric<FunctionDocumentation>(lines, methodRegex);
 
         return functions;
     }
@@ -134,6 +74,44 @@ public static class FileParser
         {
             result.Insert(0, lines[i]);
             i--;
+        }
+
+        return result;
+    }
+
+    private static List<T> ParseGeneric<T>(List<Line> lines, Regex regex) 
+        where T : IDocumentable, new()
+    {
+        var result = new List<T>();
+
+        for (int i = 0; i < lines.Count; i++)
+        {
+            var trimmed = lines[i].Content.TrimStart();
+            if (trimmed.StartsWith("//"))
+            {
+                continue;
+            }
+
+            if (regex.IsMatch(lines[i].Content.Trim()))
+            {
+                var block = ExtractBlock(lines, ref i);
+
+                result.Add(new T
+                {
+                    Summary = string.Empty,
+                    Lines = block,
+                });
+            }
+        }
+
+        foreach (var x in result)
+        {
+            var summaryLines = GetXmlDocumentationLinesAt(x.Lines.First().UniqueIdentifier, lines);
+
+            if (summaryLines.Any())
+            {
+                x.Summary = string.Join("\n", summaryLines.Select(l => l.Content.Trim()));
+            }
         }
 
         return result;

@@ -39,6 +39,7 @@ public static class Instructions
           - The `<returns>` tag (if applicable) is appropriate
           - The XML formatting follows the standard pattern
         - Be extremely strict — when in doubt, return <sufficient>.
+        - If there is no return type, do not include a `<returns>` tag.
         
         If the documentation is clearly insufficient, follow this format:
         /// <summary>
