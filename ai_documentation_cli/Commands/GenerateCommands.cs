@@ -7,7 +7,7 @@ namespace ai_documentation_cli.Commands;
 // TODO: Add validation, for example, check if there are not too many files in the directory.
 
 /// <summary>
-/// A class responsible for generating documentation for specified files or directories.
+/// Generates documentation for C# files based on specified file or directory input.
 /// </summary>
 public class GenerateCommands
 {
@@ -19,10 +19,11 @@ public class GenerateCommands
     }
 
     /// <summary>
-    /// Generates documentation for either a file or all relevant files in a directory.
+    /// Generates documentation for a specified file or directory.
     /// </summary>
-    /// <param name="file">The path to the file for which documentation is to be generated.</param>
-    /// <param name="dir">The directory containing files for which documentation is to be generated.</param>
+    /// <param name="file">The file for which documentation will be generated. Either this or the 'dir' parameter must be provided.</param>
+    /// <param name="dir">The directory containing files for which documentation will be generated. Either this or the 'file' parameter must be provided.</param>
+    /// <returns>A Task representing the asynchronous operation of generating documentation.</returns>
     [Command("generate")]
     public async Task Execute([Option("file")] string? file, [Option("dir")] string? dir)
     {

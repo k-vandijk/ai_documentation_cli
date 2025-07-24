@@ -45,6 +45,8 @@ public static class Instructions
         - Do **not** write `<returns>Nothing</returns>`, `<returns>None</returns>`, or any similar phrases for `void` methods
         - If the method returns a value (e.g., string, int, object), include a `<returns>` tag describing that return value
         - If the method has no return value, omit `<returns>` entirely
+        - if the method returns Task, do specify that inside a '<returns>' section.
+        - DO always include a '/// ' prefix before each line. *with* the trailing space.
         
         If the documentation is clearly insufficient, follow this format:
         /// <summary>

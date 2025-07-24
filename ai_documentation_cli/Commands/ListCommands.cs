@@ -4,14 +4,14 @@ using Cocona;
 namespace ai_documentation_cli.Commands;
 
 /// <summary>
-/// A class that contains a method to list relevant files in a specified directory using a given extension.
+/// Represents a class that executes a command to list relevant files in a specified directory.
 /// </summary>
 public class ListCommands
 {
     /// <summary>
-    /// Executes a function to list files with specific extensions in a specified directory.
+    /// Executes the function to list relevant files with specific extensions in the specified directory.
     /// </summary>
-    /// <param name="dir">The directory in which to search for files.</param>
+    /// <param name="dir">The directory path where the relevant files are located.</param>
     [Command("list")]
     public void Execute([Option("dir")] string? dir)
     {
