@@ -2,7 +2,7 @@
   "profiles": {
     "ai_documentation_cli": {
       "commandName": "Project",
-      "commandLineArgs": "generate --dir .",
+      "commandLineArgs": "generate --dir ../",
       "workingDirectory": "C:\\Users\\Kevin\\source\\repos\\ai_documentation_cli\\ai_documentation_cli"
     }
   }

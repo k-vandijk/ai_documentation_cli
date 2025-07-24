@@ -1,4 +1,4 @@
-﻿using ai_documentation_cli.Application.Ai;
+using ai_documentation_cli.Application.Ai;
 using ai_documentation_cli.Application.Interfaces;
 using ai_documentation_cli.Application.Operations;
 using ai_documentation_cli.Domain.Models;
@@ -6,6 +6,9 @@ using kvandijk.Common.Interfaces;
 
 namespace ai_documentation_cli.Infrastructure.Services;
 
+/// <summary>
+/// A service responsible for generating documentation for classes and functions in code files.
+/// </summary>
 public class DocumentationGenerationService : IDocumentationGenerationService
 {
     private readonly IChatCompletionService _chatCompletionService;
@@ -15,9 +18,18 @@ public class DocumentationGenerationService : IDocumentationGenerationService
         _chatCompletionService = chatCompletionService;
     }
 
-    public async Task HandleDocumentationGenerationForFile(string file)
+    /// <summary>
+    /// Asynchronously generates documentation for a file by parsing its classes and functions,
+    /// and processing the documentation for each class and public function found in the file.
+    /// </summary>
+    /// <param name="file">The path of the file to generate documentation for.</param>
+    /// <param name="dir">The directory where the file is located. It is optional, default is null.</param>
+    /// <returns>A Task representing the asynchronous operation.</returns>
+    public async Task HandleDocumentationGenerationForFile(string file, string? dir = null)
     {
-        var lines = FileParser.GetFileLines(file);
+        var path = string.IsNullOrEmpty(dir) ? file : Path.Combine(dir, file);
+
+        var lines = FileParser.GetFileLines(path);
         var classes = FileParser.ParseClasses(lines);
         var functions = FileParser.ParseFunctions(lines);
         var parsedFile = new ParsedFile { Lines = lines, Classes = classes, Functions = functions, };
@@ -32,7 +44,7 @@ public class DocumentationGenerationService : IDocumentationGenerationService
             lines = await ProcessFunctionDocumentation(f, lines);
         }
 
-        await File.WriteAllLinesAsync(file, lines.Select(l => l.Content));
+        await File.WriteAllLinesAsync(path, lines.Select(l => l.Content));
     }
 
     private static bool ShouldUpdateSummary(string summary)

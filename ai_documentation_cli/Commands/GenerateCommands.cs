@@ -50,7 +50,7 @@ public class GenerateCommands
 
             foreach (var relevantFile in relevantFiles)
             {
-                await _documentationGenerationService.HandleDocumentationGenerationForFile(relevantFile);
+                await _documentationGenerationService.HandleDocumentationGenerationForFile(relevantFile, dir);
             }
         }
     }
