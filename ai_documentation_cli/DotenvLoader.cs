@@ -1,15 +1,15 @@
 namespace ai_documentation_cli;
 
 /// <summary>
-/// Provides functionality to load environment variables from a .env file located in the current or parent directories.
+/// A utility class for loading environment variables from a .env file in the current or parent directories.
 /// </summary>
 public static class DotenvLoader
 {
     /// <summary>
-    /// Loads environment variables from a specified file or the closest ancestor file named ".env".
+    /// Loads environment variables from a specified file or the default ".env" file if not provided, searching for the file in parent directories up to a specified maximum level.
     /// </summary>
-    /// <param name="fileName">The name of the file to load the environment variables from. Defaults to ".env" if not provided.</param>
-    /// <param name="maxLevels">The maximum number of levels to search upwards for the file. Defaults to 3 if not provided.</param>
+    /// <param name="fileName">The name of the file to load the environment variables from. If not provided, it defaults to ".env".</param>
+    /// <param name="maxLevels">The maximum number of levels to search in the parent directories for the file. Defaults to 3.</param>
     public static void Load(string? fileName = null, int maxLevels = 3)
     {
         fileName ??= ".env";

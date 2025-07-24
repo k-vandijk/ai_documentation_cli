@@ -4,7 +4,7 @@ using Cocona;
 namespace ai_documentation_cli.Commands;
 
 /// <summary>
-/// Represents a class that lists files in a specified directory with a given extension.
+/// A class that contains a method to list relevant files in a specified directory using a given extension.
 /// </summary>
 public class ListCommands
 {

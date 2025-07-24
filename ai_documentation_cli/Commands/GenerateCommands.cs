@@ -5,10 +5,9 @@ using Cocona;
 namespace ai_documentation_cli.Commands;
 
 // TODO: Add validation, for example, check if there are not too many files in the directory.
-// TODO: Make sure the Xml is added before the function attributes.
 
 /// <summary>
-/// Generates documentation for C# files in a specified directory or for a single file.
+/// A class responsible for generating documentation for specified files or directories.
 /// </summary>
 public class GenerateCommands
 {
@@ -20,11 +19,10 @@ public class GenerateCommands
     }
 
     /// <summary>
-    /// Generates documentation for either a specified file or all relevant files in a directory.
+    /// Generates documentation for either a file or all relevant files in a directory.
     /// </summary>
     /// <param name="file">The path to the file for which documentation is to be generated.</param>
     /// <param name="dir">The directory containing files for which documentation is to be generated.</param>
-    /// <returns>No explicit return value. Executes the documentation generation process based on the provided file or directory.</returns>
     [Command("generate")]
     public async Task Execute([Option("file")] string? file, [Option("dir")] string? dir)
     {

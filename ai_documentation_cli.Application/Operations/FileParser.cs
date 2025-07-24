@@ -70,6 +70,13 @@ public static class FileParser
     {
         int i = lines.FindIndex(l => l.UniqueIdentifier == lineId) - 1; // Start from the line before the method or class declaration
         var result = new List<Line>();
+
+        // Skip attribute lines like [Command("...")]
+        while (i >= 0 && lines[i].Content.TrimStart().StartsWith("["))
+        {
+            i--;
+        }
+
         while (i >= 0 && lines[i].Content.TrimStart().StartsWith("///"))
         {
             result.Insert(0, lines[i]);

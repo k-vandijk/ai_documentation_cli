@@ -8,37 +8,54 @@ namespace ai_documentation_cli.Application.Operations;
 public static class FileInserter
 {
     /// <summary>
-    /// Inserts a list of lines at a specific line identified by the given lineId in another list of lines.
+    /// Inserts a list of lines (typically XML documentation) before the declaration line identified by the given lineId,
+    /// ensuring the inserted lines appear above any attribute lines.
     /// </summary>
-    /// <param name="lineId">The unique identifier of the line where the new lines will be inserted.</param>
-    /// <param name="linesToInsert">The list of lines to be inserted at the specified line.</param>
-    /// <param name="lines">The original list of lines where the new lines will be inserted.</param>
-    /// <returns>A new list of lines with the lines inserted at the specified lineId within each line's indentation.</returns>
+    /// <param name="lineId">The unique identifier of the target declaration line (e.g., a method or class).</param>
+    /// <param name="linesToInsert">The lines to insert (e.g., XML documentation).</param>
+    /// <param name="lines">The full list of lines where insertion will happen.</param>
+    /// <returns>A new list of lines with the inserted lines positioned above any attributes.</returns>
     public static List<Line> InsertLinesAt(string lineId, List<Line> linesToInsert, List<Line> lines)
     {
         if (linesToInsert == null || linesToInsert.Count == 0)
         {
-            throw new ArgumentException("The lines to insert cannot be null or empty.");
+            throw new ArgumentException("The lines to insert cannot be null or empty.", nameof(linesToInsert));
         }
 
         var result = new List<Line>();
-        foreach (var line in lines)
-        {
-            if (line.UniqueIdentifier == lineId)
-            {
-                var indentation = new string(' ', line.Content.TakeWhile(char.IsWhiteSpace).Count());
+        bool hasInserted = false;
 
-                foreach (var insertLine in linesToInsert)
+        for (int currentIndex = 0; currentIndex < lines.Count; currentIndex++)
+        {
+            var currentLine = lines[currentIndex];
+
+            // Insert when we reach the target declaration line
+            if (!hasInserted && currentLine.UniqueIdentifier == lineId)
+            {
+                // Determine the insertion index before any [Attribute] lines
+                int insertIndex = result.Count;
+                while (insertIndex > 0 && result[insertIndex - 1].Content.TrimStart().StartsWith("["))
                 {
-                    result.Add(new Line
+                    insertIndex--;
+                }
+
+                // Match the indentation of the declaration line
+                var indentation = new string(' ', currentLine.Content.TakeWhile(char.IsWhiteSpace).Count());
+
+                // Insert documentation lines before the attribute block
+                foreach (var docLine in linesToInsert)
+                {
+                    result.Insert(insertIndex++, new Line
                     {
                         UniqueIdentifier = UniqueIdentifierGenerator.GenerateShortUniqueIdentifier(),
-                        Content = indentation + insertLine.Content.TrimStart(),
+                        Content = indentation + docLine.Content.TrimStart(),
                     });
                 }
+
+                hasInserted = true;
             }
 
-            result.Add(line);
+            result.Add(currentLine);
         }
 
         return result;

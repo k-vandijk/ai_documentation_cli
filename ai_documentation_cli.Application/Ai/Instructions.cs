@@ -39,7 +39,12 @@ public static class Instructions
           - The `<returns>` tag (if applicable) is appropriate
           - The XML formatting follows the standard pattern
         - Be extremely strict — when in doubt, return <sufficient>.
-        - If there is no return type, do not add a <returns>[ ... ]</returns> section.
+        
+        Strict formatting rules:
+        - Do **not** include a `<returns>` tag for methods that return `void`
+        - Do **not** write `<returns>Nothing</returns>`, `<returns>None</returns>`, or any similar phrases for `void` methods
+        - If the method returns a value (e.g., string, int, object), include a `<returns>` tag describing that return value
+        - If the method has no return value, omit `<returns>` entirely
         
         If the documentation is clearly insufficient, follow this format:
         /// <summary>
