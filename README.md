@@ -1,7 +1,7 @@
 # Contents
 
 - [Introduction & purpose](#introduction--purpose)
-- [How to use](#how-to-use)
+- [Environment variables](#environment-variables)
 - [List of commands](#list-of-commands)
 - [.documentignore example](#documentignore-example)
 
@@ -11,17 +11,14 @@ A command line interface for generating documentation using AI.
 
 The application will search every .cs file in the current directory and generate documentation for each class, method, and property using OpenAi's ChatGPT.
 
-# How to setup
+# Environment variables
 
-Install the tool using the following command:
-```bash
-```
+Set the following environment variables in the `.env` file:
 
-Set your environment variables using the following commands:
-```bash
-$env:AZURE_OPENAI_URL=<YOUR_AZOPENAI_URL>
-$env:AZURE_OPENAI_KEY=<YOUR_AZOPENAI_KEY>
-$env:AZURE_DEPLOYMENT_NAME="gpt-35-turbo"
+```.env
+AZURE_OPENAI_URL=<YOUR_AZOPENAI_URL>
+AZURE_OPENAI_KEY=<YOUR_AZOPENAI_KEY>
+AZURE_DEPLOYMENT_NAME=gpt-35-turbo
 ```
 
 # List of commands

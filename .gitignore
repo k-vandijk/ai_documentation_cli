@@ -6,5 +6,3 @@ obj/
 .vs/
 
 nupkg/
-
-Dotenvloader.cs
