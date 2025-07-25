@@ -60,32 +60,6 @@ public static class FileParser
         return functions;
     }
 
-    /// <summary>
-    /// Retrieves the XML documentation lines located above a specific line identified by its unique identifier in a list of lines.
-    /// </summary>
-    /// <param name="lineId">The unique identifier of the line to search for.</param>
-    /// <param name="lines">The list of lines where the specific line is located.</param>
-    /// <returns>A list of Line objects that represent the XML documentation lines above the line with the specified unique identifier.</returns>
-    public static List<Line> GetXmlDocumentationLinesAt(string lineId, List<Line> lines)
-    {
-        int i = lines.FindIndex(l => l.UniqueIdentifier == lineId) - 1; // Start from the line before the method or class declaration
-        var result = new List<Line>();
-
-        // Skip attribute lines like [Command("...")]
-        while (i >= 0 && lines[i].Content.TrimStart().StartsWith("["))
-        {
-            i--;
-        }
-
-        while (i >= 0 && lines[i].Content.TrimStart().StartsWith("///"))
-        {
-            result.Insert(0, lines[i]);
-            i--;
-        }
-
-        return result;
-    }
-
     public static List<T> ParseGeneric<T>(List<Line> lines, Regex regex) 
         where T : IDocumentable, new()
     {
@@ -119,6 +93,32 @@ public static class FileParser
             {
                 x.Summary = string.Join("\n", summaryLines.Select(l => l.Content.Trim()));
             }
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Retrieves the XML documentation lines located above a specific line identified by its unique identifier in a list of lines.
+    /// </summary>
+    /// <param name="lineId">The unique identifier of the line to search for.</param>
+    /// <param name="lines">The list of lines where the specific line is located.</param>
+    /// <returns>A list of Line objects that represent the XML documentation lines above the line with the specified unique identifier.</returns>
+    public static List<Line> GetXmlDocumentationLinesAt(string lineId, List<Line> lines)
+    {
+        int i = lines.FindIndex(l => l.UniqueIdentifier == lineId) - 1; // Start from the line before the method or class declaration
+        var result = new List<Line>();
+
+        // Skip attribute lines like [Command("...")]
+        while (i >= 0 && lines[i].Content.TrimStart().StartsWith("["))
+        {
+            i--;
+        }
+
+        while (i >= 0 && lines[i].Content.TrimStart().StartsWith("///"))
+        {
+            result.Insert(0, lines[i]);
+            i--;
         }
 
         return result;

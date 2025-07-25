@@ -1,9 +1,9 @@
 ﻿# Contents
 
-- [Contributing](#contributing)
 - [Clean Architecture](#clean-architecture)
 - [Environment variables](#environment-variables)
 - [How to pack and install the package](#how-to-pack-and-install-the-package)
+- [Run tests](#run-tests)
 
 # Clean Architecture
 
@@ -44,4 +44,26 @@ dotnet tool install --global --add-source ./nupkg ai_documentation_cli
 
 ```
 dotnet tool uninstall -g ai_documentation_cli
+```
+
+# Run tests
+
+You can normally run tests using `ctrl + r + a`, or you can run the following command to also generate the test coverage result:
+
+```
+dotnet test --collect:"XPlat Code Coverage"
+```
+
+Assuming you have the `ReportGenerator` tool installed, you can generate the report using:
+
+```
+reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:coverage-report -reporttypes:Html
+```
+
+The report will be located at `/coverage-report/index.html`
+
+You can install `ReportGenerator` globally by running:
+
+```
+dotnet tool install --global dotnet-reportgenerator-globaltool
 ```

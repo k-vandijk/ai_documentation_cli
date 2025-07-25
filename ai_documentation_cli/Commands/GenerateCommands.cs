@@ -7,7 +7,7 @@ namespace ai_documentation_cli.Commands;
 // TODO: Add validation, for example, check if there are not too many files in the directory.
 
 /// <summary>
-/// Generates documentation for C# files based on specified file or directory input.
+/// Handles generation of documentation based on specified file or directory inputs.
 /// </summary>
 public class GenerateCommands
 {
@@ -19,21 +19,23 @@ public class GenerateCommands
     }
 
     /// <summary>
-    /// Generates documentation for a specified file or directory.
+    /// Asynchronously generates documentation for a specified file or directory.
     /// </summary>
-    /// <param name="file">The file for which documentation will be generated. Either this or the 'dir' parameter must be provided.</param>
-    /// <param name="dir">The directory containing files for which documentation will be generated. Either this or the 'file' parameter must be provided.</param>
-    /// <returns>A Task representing the asynchronous operation of generating documentation.</returns>
+    /// <param name="file">The path to the file for which documentation needs to be generated.</param>
+    /// <param name="dir">The path to the directory containing files for which documentation needs to be generated.</param>
+    /// <returns>A Task representing the asynchronous operation.</returns>
     [Command("generate")]
     public async Task Execute([Option("file")] string? file, [Option("dir")] string? dir)
     {
         if (string.IsNullOrEmpty(file) && string.IsNullOrEmpty(dir))
         {
+            // TODO Consider using a more specific custom exception type.
             throw new InvalidOperationException("You must provide either a file or a directory to generate documentation.");
         }
 
         if (!string.IsNullOrEmpty(file) && !string.IsNullOrEmpty(dir))
         {
+            // TODO Consider using a more specific custom exception type.
             throw new InvalidOperationException("You cannot provide both a file and a directory to generate documentation.");
         }
 
@@ -43,6 +45,8 @@ public class GenerateCommands
         }
         else if (!string.IsNullOrEmpty(dir))
         {
+            // TODO The following code is also used in ListCommands, refactor it to a common utility class.
+
             var extensions = new List<string> { ".cs" };
             var currentDirectory = Environment.CurrentDirectory;
             var directory = Path.Join(currentDirectory, dir);

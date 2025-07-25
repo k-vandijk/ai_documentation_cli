@@ -19,6 +19,7 @@ public static class FileInserter
     {
         if (linesToInsert == null || linesToInsert.Count == 0)
         {
+            // TODO Consider using a more specific custom exception type.
             throw new ArgumentException("The lines to insert cannot be null or empty.", nameof(linesToInsert));
         }
 

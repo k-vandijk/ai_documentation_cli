@@ -4,6 +4,13 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ai_documentation_cli.Application\ai_documentation_cli.Application.csproj" />
+    <ProjectReference Include="..\ai_documentation_cli.Domain\ai_documentation_cli.Domain.csproj" />
+    <ProjectReference Include="..\ai_documentation_cli.Infrastructure\ai_documentation_cli.Infrastructure.csproj" />
+    <ProjectReference Include="..\ai_documentation_cli\ai_documentation_cli.csproj" />
+  </ItemGroup>
+
   <ItemGroup Label="Development-only dependencies">
     <PackageReference Include="coverlet.collector"><PrivateAssets>all</PrivateAssets></PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk"><PrivateAssets>all</PrivateAssets></PackageReference>
@@ -12,20 +19,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ai_documentation_cli.Application\ai_documentation_cli.Application.csproj" />
-    <ProjectReference Include="..\ai_documentation_cli.Domain\ai_documentation_cli.Domain.csproj" />
-    <ProjectReference Include="..\ai_documentation_cli.Infrastructure\ai_documentation_cli.Infrastructure.csproj" />
-    <ProjectReference Include="..\ai_documentation_cli\ai_documentation_cli.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Using Include="Xunit" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="Fixtures\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="TestResults\**" />
+    <EmbeddedResource Remove="TestResults\**" />
+    <None Remove="TestResults\**" />
   </ItemGroup>
 
 </Project>

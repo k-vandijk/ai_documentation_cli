@@ -15,11 +15,11 @@ public class ListCommands
     [Command("list")]
     public void Execute([Option("dir")] string? dir)
     {
-        var extensions = new List<string> { ".cs" };
+        // TODO The following code is also used in GenerateCommands, refactor it to a common utility class.
 
+        var extensions = new List<string> { ".cs" };
         var currentDirectory = Environment.CurrentDirectory;
         var directory = Path.Join(currentDirectory, dir);
-
         var relevantFiles = DirectoryOperations.ListRelevantFiles(directory, extensions);
 
         foreach (var file in relevantFiles)

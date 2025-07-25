@@ -5,7 +5,7 @@ namespace ai_documentation_cli.Domain.Models;
 /// </summary>
 public class ParsedFile
 {
-    public List<Line> Lines { get; set; } = new List<Line>();
-    public List<ClassDocumentation> Classes { get; set; } = new List<ClassDocumentation>();
-    public List<FunctionDocumentation> Functions { get; set; } = new List<FunctionDocumentation>();
+    public List<Line> Lines { get; set; } = new ();
+    public List<ClassDocumentation> Classes { get; set; } = new ();
+    public List<FunctionDocumentation> Functions { get; set; } = new ();
 }
