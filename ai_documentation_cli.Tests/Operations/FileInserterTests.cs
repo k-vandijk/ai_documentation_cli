@@ -53,23 +53,25 @@ public class FileInserterTests
 
         return rawLines.Select(line => new Line
         {
-            UniqueIdentifier = UniqueIdentifierGenerator.GenerateShortUniqueIdentifier(),
+            UniqueIdentifier = GenerateId(),
             Content = line
         }).ToList();
     }
 
     private List<Line> BuildSummaryLines() => new()
     {
-        new() { UniqueIdentifier = UniqueIdentifierGenerator.GenerateShortUniqueIdentifier(), Content = "/// <summary>" },
-        new() { UniqueIdentifier = UniqueIdentifierGenerator.GenerateShortUniqueIdentifier(), Content = "/// Inserts a list of lines (typically XML documentation) before the declaration line identified by the given lineId," },
-        new() { UniqueIdentifier = UniqueIdentifierGenerator.GenerateShortUniqueIdentifier(), Content = "/// ensuring the inserted lines appear above any attribute lines." },
-        new() { UniqueIdentifier = UniqueIdentifierGenerator.GenerateShortUniqueIdentifier(), Content = "/// </summary>" },
-        new() { UniqueIdentifier = UniqueIdentifierGenerator.GenerateShortUniqueIdentifier(), Content = "/// <param name=\"lineId\">The unique identifier of the target declaration line (e.g., a method or class).</param>" },
-        new() { UniqueIdentifier = UniqueIdentifierGenerator.GenerateShortUniqueIdentifier(), Content = "/// <param name=\"linesToInsert\">The lines to insert (e.g., XML documentation).</param>" },
-        new() { UniqueIdentifier = UniqueIdentifierGenerator.GenerateShortUniqueIdentifier(), Content = "/// <param name=\"lines\">The full list of lines where insertion will happen.</param>" },
-        new() { UniqueIdentifier = UniqueIdentifierGenerator.GenerateShortUniqueIdentifier(), Content = "/// <returns>A new list of lines with the inserted lines positioned above any attributes.</returns>" },
+        new() { UniqueIdentifier = GenerateId(), Content = "/// <summary>" },
+        new() { UniqueIdentifier = GenerateId(), Content = "/// Inserts a list of lines (typically XML documentation) before the declaration line identified by the given lineId," },
+        new() { UniqueIdentifier = GenerateId(), Content = "/// ensuring the inserted lines appear above any attribute lines." },
+        new() { UniqueIdentifier = GenerateId(), Content = "/// </summary>" },
+        new() { UniqueIdentifier = GenerateId(), Content = "/// <param name=\"lineId\">The unique identifier of the target declaration line (e.g., a method or class).</param>" },
+        new() { UniqueIdentifier = GenerateId(), Content = "/// <param name=\"linesToInsert\">The lines to insert (e.g., XML documentation).</param>" },
+        new() { UniqueIdentifier = GenerateId(), Content = "/// <param name=\"lines\">The full list of lines where insertion will happen.</param>" },
+        new() { UniqueIdentifier = GenerateId(), Content = "/// <returns>A new list of lines with the inserted lines positioned above any attributes.</returns>" },
     };
     
+    private string GenerateId() => UniqueIdentifierGenerator.GenerateShortUniqueIdentifier();
+
     [Fact]
     public void SplitSummaryIntoLines_ReturnsCorrectListOfLines()
     {
@@ -81,8 +83,8 @@ public class FileInserterTests
         
         var expectedLines = new List<Line>
         {
-            new Line { UniqueIdentifier = UniqueIdentifierGenerator.GenerateShortUniqueIdentifier(), Content = "This is a summary." },
-            new Line { UniqueIdentifier = UniqueIdentifierGenerator.GenerateShortUniqueIdentifier(), Content = "It has multiple lines." }
+            new Line { UniqueIdentifier = GenerateId(), Content = "This is a summary." },
+            new Line { UniqueIdentifier = GenerateId(), Content = "It has multiple lines." }
         };
 
         // Act

@@ -29,13 +29,13 @@ public class GenerateCommands
     {
         if (string.IsNullOrEmpty(file) && string.IsNullOrEmpty(dir))
         {
-            // TODO Consider using a more specific custom exception type.
+            // TODO use a more specific custom exception type.
             throw new InvalidOperationException("You must provide either a file or a directory to generate documentation.");
         }
 
         if (!string.IsNullOrEmpty(file) && !string.IsNullOrEmpty(dir))
         {
-            // TODO Consider using a more specific custom exception type.
+            // TODO use a more specific custom exception type.
             throw new InvalidOperationException("You cannot provide both a file and a directory to generate documentation.");
         }
 

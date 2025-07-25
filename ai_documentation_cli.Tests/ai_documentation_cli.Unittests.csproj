@@ -8,7 +8,7 @@
     <ProjectReference Include="..\ai_documentation_cli.Application\ai_documentation_cli.Application.csproj" />
     <ProjectReference Include="..\ai_documentation_cli.Domain\ai_documentation_cli.Domain.csproj" />
     <ProjectReference Include="..\ai_documentation_cli.Infrastructure\ai_documentation_cli.Infrastructure.csproj" />
-    <ProjectReference Include="..\ai_documentation_cli\ai_documentation_cli.csproj" />
+    <ProjectReference Include="..\ai_documentation_cli\ai_documentation_cli._Presentation.csproj" />
   </ItemGroup>
 
   <ItemGroup Label="Development-only dependencies">
