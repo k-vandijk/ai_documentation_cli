@@ -10,7 +10,11 @@
   </ItemGroup>
 
   <ItemGroup Label="Development-only dependencies">
+    <PackageVersion Include="coverlet.collector" Version="6.0.2"><PrivateAssets>all</PrivateAssets></PackageVersion>
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0"><PrivateAssets>all</PrivateAssets></PackageVersion>
     <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.15.0.120848"><PrivateAssets>all</PrivateAssets></PackageVersion>
     <PackageVersion Include="StyleCop.Analyzers" Version="1.1.118"><PrivateAssets>all</PrivateAssets></PackageVersion>
+    <PackageVersion Include="xunit" Version="2.9.2"><PrivateAssets>all</PrivateAssets></PackageVersion>
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2"><PrivateAssets>all</PrivateAssets></PackageVersion>
   </ItemGroup>
 </Project>

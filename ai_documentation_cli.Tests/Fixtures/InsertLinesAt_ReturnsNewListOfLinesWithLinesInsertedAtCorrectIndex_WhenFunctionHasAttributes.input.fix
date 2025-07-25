@@ -1,0 +1,66 @@
+﻿using ai_documentation_cli.Domain.Models;
+
+namespace ai_documentation_cli.Application.Operations;
+
+public static class FileInserter
+{
+    [Something]
+    [Something]
+    [Something]
+    public static List<Line> InsertLinesAt(string lineId, List<Line> linesToInsert, List<Line> lines)
+    {
+        if (linesToInsert == null || linesToInsert.Count == 0)
+        {
+            throw new ArgumentException("The lines to insert cannot be null or empty.", nameof(linesToInsert));
+        }
+
+        var result = new List<Line>();
+        bool hasInserted = false;
+
+        for (int currentIndex = 0; currentIndex < lines.Count; currentIndex++)
+        {
+            var currentLine = lines[currentIndex];
+
+            // Insert when we reach the target declaration line
+            if (!hasInserted && currentLine.UniqueIdentifier == lineId)
+            {
+                // Determine the insertion index before any [Attribute] lines
+                int insertIndex = result.Count;
+                while (insertIndex > 0 && result[insertIndex - 1].Content.TrimStart().StartsWith("["))
+                {
+                    insertIndex--;
+                }
+
+                // Match the indentation of the declaration line
+                var indentation = new string(' ', currentLine.Content.TakeWhile(char.IsWhiteSpace).Count());
+
+                // Insert documentation lines before the attribute block
+                foreach (var docLine in linesToInsert)
+                {
+                    result.Insert(insertIndex++, new Line
+                    {
+                        UniqueIdentifier = UniqueIdentifierGenerator.GenerateShortUniqueIdentifier(),
+                        Content = indentation + docLine.Content.TrimStart(),
+                    });
+                }
+
+                hasInserted = true;
+            }
+
+            result.Add(currentLine);
+        }
+
+        return result;
+    }
+
+    public static List<Line> SplitSummaryIntoLines(string summary)
+    {
+        var lines = summary.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+
+        return lines.Select(line => new Line
+        {
+            UniqueIdentifier = UniqueIdentifierGenerator.GenerateShortUniqueIdentifier(),
+            Content = line.Trim(),
+        }).ToList();
+    }
+}

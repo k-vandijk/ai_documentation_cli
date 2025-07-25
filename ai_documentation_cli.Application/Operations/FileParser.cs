@@ -86,7 +86,7 @@ public static class FileParser
         return result;
     }
 
-    private static List<T> ParseGeneric<T>(List<Line> lines, Regex regex) 
+    public static List<T> ParseGeneric<T>(List<Line> lines, Regex regex) 
         where T : IDocumentable, new()
     {
         var result = new List<T>();
@@ -130,7 +130,7 @@ public static class FileParser
     /// <param name="lines">The list of lines from which to extract the block.</param>
     /// <param name="index">The index to start extracting the block from. This will be updated to the index after the extracted block.</param>
     /// <returns>A list of lines representing the extracted block.</returns>
-    private static List<Line> ExtractBlock(List<Line> lines, ref int index)
+    public static List<Line> ExtractBlock(List<Line> lines, ref int index)
     {
         var block = new List<Line>();
         int braceCount = 0;
